@@ -1,7 +1,7 @@
 'use strict';
 
-export let field_width = 30;
-export let field_height = 30;
+let field_width = 30;
+let field_height = 30;
 
 export let initialize = function () {
     let resulting_field = "";

@@ -61,7 +61,14 @@
 
 	var isPaused = true;
 
-	var nextStep = function nextStep() {};
+	var nextStep = function nextStep() {
+	    var changing_cells = Model.nextCellStates();
+	    for (var i = 0; i < changing_cells.length; i++) {
+	        var current_ID = "#" + changing_cells[i][0] + "-" + changing_cells[i][1];
+	        Model.changeCellState($(current_ID));
+	        View.changeCellState($(current_ID));
+	    }
+	};
 
 	var tick = setInterval(function () {
 	    if (!isPaused) {
@@ -71,7 +78,7 @@
 
 	$('td').click(function () {
 	    View.changeCellState($(this));
-	    Model.changeCellState($(this).attr('id'));
+	    Model.changeCellState($(this));
 	});
 
 	$('#start-button').click(function () {
@@ -100,8 +107,8 @@
 
 	var cells = exports.cells = [];
 
-	var field_width = exports.field_width = 30;
-	var field_height = exports.field_height = 30;
+	var field_width = 30;
+	var field_height = 30;
 
 	var initialize = exports.initialize = function initialize() {
 	    for (var i = 0; i < field_height; i++) {
@@ -112,13 +119,13 @@
 	    }
 	};
 
-	var changeCellState = exports.changeCellState = function changeCellState(cell_id) {
-	    var _cell_id$split = cell_id.split('-');
+	var changeCellState = exports.changeCellState = function changeCellState(cell) {
+	    var _cell$attr$split = cell.attr('id').split('-');
 
-	    var _cell_id$split2 = _slicedToArray(_cell_id$split, 2);
+	    var _cell$attr$split2 = _slicedToArray(_cell$attr$split, 2);
 
-	    var x = _cell_id$split2[0];
-	    var y = _cell_id$split2[1];
+	    var x = _cell$attr$split2[0];
+	    var y = _cell$attr$split2[1];
 
 
 	    if (cells[x][y] === 1) {
@@ -126,6 +133,86 @@
 	    } else {
 	        cells[x][y] = 1;
 	    }
+	};
+
+	var nextCellStates = exports.nextCellStates = function nextCellStates() {
+	    var changing_cells = [];
+
+	    for (var i = 0; i < field_height; i++) {
+	        for (var j = 0; j < field_width; j++) {
+	            var alive_neighbours = 0;
+
+	            if (i === 0 && j === 0) {
+	                //левый верхний угол
+	                cells[i][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j] === 1 ? alive_neighbours++ : false;
+	            } else if (i === 0 && j === field_width - 1) {
+	                //правый верхний угол
+	                cells[i][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j] === 1 ? alive_neighbours++ : false;
+	            } else if (i === field_height - 1 && j === 0) {
+	                //левый нижний угол
+	                cells[i - 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j + 1] === 1 ? alive_neighbours++ : false;
+	            } else if (i === field_height - 1 && j === field_width - 1) {
+	                //правый нижний угол
+	                cells[i - 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j - 1] === 1 ? alive_neighbours++ : false;
+	            } else if (i === 0) {
+	                //верхняя строка
+	                cells[i][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j + 1] === 1 ? alive_neighbours++ : false;
+	            } else if (i === field_height - 1) {
+	                //нижняя строка
+	                cells[i][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j + 1] === 1 ? alive_neighbours++ : false;
+	            } else if (j === 0) {
+	                //левый столбец
+	                cells[i - 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j] === 1 ? alive_neighbours++ : false;
+	            } else if (j === field_width - 1) {
+	                //правый столбец
+	                cells[i - 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j] === 1 ? alive_neighbours++ : false;
+	            } else {
+	                //внутри поля
+	                cells[i - 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j - 1] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j] === 1 ? alive_neighbours++ : false;
+	                cells[i + 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j + 1] === 1 ? alive_neighbours++ : false;
+	                cells[i - 1][j] === 1 ? alive_neighbours++ : false;
+	            }
+
+	            if (cells[i][j] === 0 && alive_neighbours === 3) {
+	                changing_cells.push([i, j]);
+	            } else if (cells[i][j] === 1 && alive_neighbours < 2) {
+	                changing_cells.push([i, j]);
+	            } else if (cells[i][j] === 1 && alive_neighbours > 3) {
+	                changing_cells.push([i, j]);
+	            }
+	        }
+	    }
+
+	    return changing_cells;
 	};
 
 /***/ },
@@ -137,8 +224,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	var field_width = exports.field_width = 30;
-	var field_height = exports.field_height = 30;
+	var field_width = 30;
+	var field_height = 30;
 
 	var initialize = exports.initialize = function initialize() {
 	    var resulting_field = "";
