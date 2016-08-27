@@ -1,4 +1,15 @@
-.content-container {
-    width: 95%;
-    margin: 0 auto;
+.dead {
+    width: 10px;
+    height: 10px;
+    box-sizing: border-box;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.alive {
+    width: 10px;
+    height: 10px;
+    box-sizing: border-box;
+    background-color: green;
+    border: 1px solid black;
 }
