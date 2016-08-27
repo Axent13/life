@@ -2,7 +2,10 @@
 
 export let cells = [];
 
-export let initialize = function (field_width = 30, field_height = 30) {
+export let field_width = 30;
+export let field_height = 30;
+
+export let initialize = function () {
     for(let i = 0; i < field_height; i++){
         cells[i] = [];
         for(let j = 0; j < field_width; j++){
@@ -20,3 +23,4 @@ export let changeCellState = function (cell_id) {
         cells[x][y] = 1;
     }
 };
+

@@ -6,6 +6,10 @@ module.exports = {
 
     watch: true,
 
+    watchOptions: {
+        aggregateTimeout: 100
+    },
+
     module: {
         loaders: [
             {

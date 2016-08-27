@@ -46,11 +46,11 @@
 
 	'use strict';
 
-	var _model = __webpack_require__(2);
+	var _model = __webpack_require__(1);
 
 	var Model = _interopRequireWildcard(_model);
 
-	var _view = __webpack_require__(1);
+	var _view = __webpack_require__(2);
 
 	var View = _interopRequireWildcard(_view);
 
@@ -59,43 +59,35 @@
 	Model.initialize();
 	View.initialize();
 
+	var isPaused = true;
+
+	var nextStep = function nextStep() {};
+
+	var tick = setInterval(function () {
+	    if (!isPaused) {
+	        nextStep();
+	    }
+	}, 1000);
+
 	$('td').click(function () {
-	    //alert($(this).attr('id'));
-	    //alert($(this).attr('class'));
 	    View.changeCellState($(this));
 	    Model.changeCellState($(this).attr('id'));
 	});
 
+	$('#start-button').click(function () {
+	    $(this).attr('disabled', 'true');
+	    $('#pause-button').removeAttr('disabled');
+	    isPaused = false;
+	});
+
+	$('#pause-button').click(function () {
+	    $(this).attr('disabled', 'true');
+	    $('#start-button').removeAttr('disabled');
+	    isPaused = true;
+	});
+
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var initialize = exports.initialize = function initialize() {
-	    var field_width = arguments.length <= 0 || arguments[0] === undefined ? 30 : arguments[0];
-	    var field_height = arguments.length <= 1 || arguments[1] === undefined ? 30 : arguments[1];
-
-	    var resulting_field = "";
-	    for (var i = 0; i < field_height; i++) {
-	        resulting_field += "<tr>";
-	        for (var j = 0; j < field_width; j++) {
-	            resulting_field += "<td id='" + i + "-" + j + "' class='dead'></td>";
-	        }
-	        resulting_field += "</tr>";
-	    }
-	    $("#game-field").html(resulting_field);
-	};
-
-	var changeCellState = exports.changeCellState = function changeCellState(cell) {
-	    cell.toggleClass("alive dead");
-	};
-
-/***/ },
-/* 2 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -108,10 +100,10 @@
 
 	var cells = exports.cells = [];
 
-	var initialize = exports.initialize = function initialize() {
-	    var field_width = arguments.length <= 0 || arguments[0] === undefined ? 30 : arguments[0];
-	    var field_height = arguments.length <= 1 || arguments[1] === undefined ? 30 : arguments[1];
+	var field_width = exports.field_width = 30;
+	var field_height = exports.field_height = 30;
 
+	var initialize = exports.initialize = function initialize() {
 	    for (var i = 0; i < field_height; i++) {
 	        cells[i] = [];
 	        for (var j = 0; j < field_width; j++) {
@@ -134,6 +126,34 @@
 	    } else {
 	        cells[x][y] = 1;
 	    }
+	};
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var field_width = exports.field_width = 30;
+	var field_height = exports.field_height = 30;
+
+	var initialize = exports.initialize = function initialize() {
+	    var resulting_field = "";
+	    for (var i = 0; i < field_height; i++) {
+	        resulting_field += "<tr>";
+	        for (var j = 0; j < field_width; j++) {
+	            resulting_field += "<td id='" + i + "-" + j + "' class='dead'></td>";
+	        }
+	        resulting_field += "</tr>";
+	    }
+	    $("#game-field").html(resulting_field);
+	};
+
+	var changeCellState = exports.changeCellState = function changeCellState(cell) {
+	    cell.toggleClass("alive dead");
 	};
 
 /***/ }

@@ -1,6 +1,9 @@
 'use strict';
 
-export let initialize = function (field_width = 30, field_height = 30) {
+export let field_width = 30;
+export let field_height = 30;
+
+export let initialize = function () {
     let resulting_field = "";
     for(let i = 0; i < field_height; i++){
         resulting_field += "<tr>";
