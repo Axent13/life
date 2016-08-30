@@ -4,12 +4,6 @@ module.exports = {
         filename: "bundle.js"
     },
 
-    watch: true,
-
-    watchOptions: {
-        aggregateTimeout: 100
-    },
-
     module: {
         loaders: [
             {

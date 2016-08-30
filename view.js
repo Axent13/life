@@ -1,5 +1,3 @@
-'use strict';
-
 let field_width = 30;
 let field_height = 30;
 

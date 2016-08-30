@@ -1,5 +1,3 @@
-'use strict';
-
 export let cells = [];
 
 let field_width = 30;
