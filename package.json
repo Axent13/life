@@ -1,0 +1,40 @@
+{
+  "name": "axent_game_of_life",
+  "version": "1.0.0",
+  "description": "Realization of popular algorithm",
+  "main": "bundle.js",
+  "dependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-core": "^6.14.0",
+    "webpack": "^1.13.2",
+    "chai": "^3.5.0"
+  },
+  "devDependencies": {
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-mocha": "^1.1.1",
+    "karma-mocha-reporter": "^2.1.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.8.0",
+    "mocha": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axent13/life.git"
+  },
+  "keywords": [
+    "life",
+    "game"
+  ],
+  "author": "Axent13",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Axent13/life/issues"
+  },
+  "homepage": "https://github.com/Axent13/life#readme"
+}
