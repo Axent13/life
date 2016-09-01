@@ -37,7 +37,3 @@ $('#pause-button').click(function () {
     $('#start-button').removeAttr('disabled');
     isPaused = true;
 });
-
-export let pow = function () {
-    return 8;
-};
