@@ -22,7 +22,8 @@
     "chai": "^3.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "wepback-dev-server",
+    "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
