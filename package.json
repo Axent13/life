@@ -24,8 +24,8 @@
     "jquery": "^3.1.0"
   },
   "scripts": {
-    "build": "webpack-dev-server",
-    "test": "karma start karma.conf.js"
+    "build": "webpack-dev-server --config webpack/webpack.config.js",
+    "test": "karma start karma/karma.conf.js"
   },
   "repository": {
     "type": "git",
