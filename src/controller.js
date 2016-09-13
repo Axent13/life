@@ -1,39 +1,40 @@
-import * as Model from "./model.js";
-import * as View from "./view.js";
+import {Model}  from "./model.js";
+import {View} from "./view.js";
 
-Model.initialize();
-View.initialize();
+export class Controller {
 
-let isPaused = true;
+    constructor(field_width = 30, field_height = 30) {
+        this._view = new View(field_width, field_height);
+        this._model = new Model(field_width, field_height);
+        this._isPaused = true;
 
-let nextStep = function () {
-    let changing_cells = Model.nextCellStates();
-    for(let i = 0; i < changing_cells.length; i++){
-        let current_ID = `#${changing_cells[i][0]}-${changing_cells[i][1]}`;
-        Model.changeCellState($(current_ID));
-        View.changeCellState($(current_ID));
+        this._view.drawField();
+
+        let that = this;
+        $('td').click(function () {
+            that._view.changeCellState($(this));
+            that._model.changeCellState($(this));
+        });
+
+        $('#start-button').click(function () {
+            $(this).attr('disabled', 'true');
+            $('#pause-button').removeAttr('disabled');
+            that._isPaused = false;
+        });
+
+        $('#pause-button').click(function () {
+            $(this).attr('disabled', 'true');
+            $('#start-button').removeAttr('disabled');
+            that._isPaused = true;
+        });
     }
-};
 
-let tick = setInterval(function() {
-    if(!isPaused) {
-        nextStep();
+    nextStep() {
+        let changing_cells = this._model.nextCellStates();
+        for(let i = 0; i < changing_cells.length; i++){
+            let current_ID = `#${changing_cells[i][0]}-${changing_cells[i][1]}`;
+            this._model.changeCellState($(current_ID));
+            this._view.changeCellState($(current_ID));
+        }
     }
-}, 1000);
-
-$('td').click(function () {
-    View.changeCellState($(this));
-    Model.changeCellState($(this));
-});
-
-$('#start-button').click(function () {
-    $(this).attr('disabled', 'true');
-    $('#pause-button').removeAttr('disabled');
-    isPaused = false;
-});
-
-$('#pause-button').click(function () {
-    $(this).attr('disabled', 'true');
-    $('#start-button').removeAttr('disabled');
-    isPaused = true;
-});
+}
