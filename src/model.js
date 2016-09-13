@@ -13,8 +13,7 @@ export class Model {
         }
     }
 
-    changeCellState(cell) {
-        let [x, y] = cell.attr('id').split('-');
+    changeCellState(x, y) {
 
         if(this._cells[x][y] === 1){
             this._cells[x][y] = 0;
