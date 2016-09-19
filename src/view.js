@@ -14,7 +14,8 @@ export default class View {
             }
             resultingField += '</tr>';
         }
-        $('#game-field').html(resultingField);
+        const $gameField = $('#game-field');
+        $gameField.html(resultingField);
 
         return resultingField;
     }

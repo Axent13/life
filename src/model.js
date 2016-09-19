@@ -23,6 +23,28 @@ export default class Model {
         return 1;
     }
 
+    nextCellStates() {
+        const changingCells = [];
+
+        for (let i = 0; i < this._fieldHeight; i += 1) {
+            for (let j = 0; j < this._fieldWidth; j += 1) {
+                let aliveNeighboursCounter = 0;
+
+                aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
+
+                if (this._cells[i][j] === 0 && aliveNeighboursCounter === 3) {
+                    changingCells.push([i, j]);
+                } else if (this._cells[i][j] === 1 && aliveNeighboursCounter < 2) {
+                    changingCells.push([i, j]);
+                } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
+                    changingCells.push([i, j]);
+                }
+            }
+        }
+
+        return changingCells;
+    }
+
     _isElementInsideField(i, j) {
         if (j >= 0 && j < this._fieldHeight) {
             if (i >= 0 && i < this._fieldWidth) {
@@ -47,27 +69,5 @@ export default class Model {
         }
 
         return aliveNeighbours;
-    }
-
-    nextCellStates() {
-        const changingCells = [];
-
-        for (let i = 0; i < this._fieldHeight; i += 1) {
-            for (let j = 0; j < this._fieldWidth; j += 1) {
-                let aliveNeighboursCounter = 0;
-
-                aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
-
-                if (this._cells[i][j] === 0 && aliveNeighboursCounter === 3) {
-                    changingCells.push([i, j]);
-                } else if (this._cells[i][j] === 1 && aliveNeighboursCounter < 2) {
-                    changingCells.push([i, j]);
-                } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
-                    changingCells.push([i, j]);
-                }
-            }
-        }
-
-        return changingCells;
     }
 }

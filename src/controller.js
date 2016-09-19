@@ -20,13 +20,15 @@ export default class Controller {
 
         $('#start-button').click( function() {
             $(this).attr('disabled', 'true');
-            $('#pause-button').removeAttr('disabled');
+            const $pauseButton = $('#pause-button');
+            $pauseButton.removeAttr('disabled');
             that._isPaused = false;
         });
 
         $('#pause-button').click( function() {
             $(this).attr('disabled', 'true');
-            $('#start-button').removeAttr('disabled');
+            const $startButton = $('#start-button');
+            $startButton.removeAttr('disabled');
             that._isPaused = true;
         });
     }

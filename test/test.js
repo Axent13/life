@@ -133,4 +133,26 @@ describe('View testing:', () => {
             assert.equal(resultingField, expectingResult);
         });
     });
+
+    describe('Checking changeCellState(cell)', () => {
+        it('Dead cell should return alive', () => {
+            const view = new View(1, 1);
+
+            view.drawField();
+            $('html').append("<td id=0-0 class='dead'></td>");
+            const resultingClass = view.changeCellState($('td'));
+
+            assert.equal(resultingClass, 'alive');
+        });
+
+        it('Alive cell should return dead', () => {
+            const view = new View(1, 1);
+
+            view.drawField();
+            $('html').append("<td id=0-0 class='alive'></td>");
+            const resultingClass = view.changeCellState($('td'));
+
+            assert.equal(resultingClass, 'dead');
+        });
+    });
 });
