@@ -1,29 +1,27 @@
-export class View {
+export default class View {
 
-    constructor(field_width = 30, field_height = 30) {
-        this._field_width = field_width;
-        this._field_height = field_height;
+    constructor(fieldWidth = 30, fieldHeight = 30) {
+        this._field_width = fieldWidth;
+        this._field_height = fieldHeight;
     }
 
     drawField() {
-        let resulting_field = "";
-        for(let i = 0; i < this._field_height; i++){
-            resulting_field += "<tr>";
-            for(let j = 0; j < this._field_width; j++){
-                resulting_field += "<td id='" + i + "-" + j + "' class='dead'></td>";
+        let resultingField = '';
+        for (let i = 0; i < this._field_height; i += 1) {
+            resultingField += '<tr>';
+            for (let j = 0; j < this._field_width; j += 1) {
+                resultingField += `<td id=\'${i}-${j}\' class=\'dead\'></td>`;
             }
-            resulting_field += "</tr>";
+            resultingField += '</tr>';
         }
-        $("#game-field").html(resulting_field);
+        $('#game-field').html(resultingField);
 
-        return resulting_field;
+        return resultingField;
     }
 
     changeCellState(cell) {
-        cell.toggleClass("alive dead");
+        cell.toggleClass('alive dead');
 
         return cell.attr('class');
     }
 }
-
-

@@ -1,34 +1,31 @@
-export class Model {
+export default class Model {
 
-    constructor(field_width = 30, field_height = 30) {
-        this._field_width = field_width;
-        this._field_height = field_height;
+    constructor(fieldWidth = 30, fieldHeight = 30) {
+        this._fieldWidth = fieldWidth;
+        this._fieldHeight = fieldHeight;
 
         this._cells = [];
-        for(let i = 0; i < this._field_height; i++){
+        for (let i = 0; i < this._fieldHeight; i += 1) {
             this._cells[i] = [];
-            for(let j = 0; j < this._field_width; j++){
+            for (let j = 0; j < this._fieldWidth; j += 1) {
                 this._cells[i][j] = 0;
             }
         }
     }
 
     changeCellState(x, y) {
-
-        if(this._cells[x][y] === 1){
+        if (this._cells[x][y] === 1) {
             this._cells[x][y] = 0;
 
             return 0;
-        } else {
-            this._cells[x][y] = 1;
-
-            return 1;
         }
+        this._cells[x][y] = 1;
+        return 1;
     }
 
     _isElementInsideField(i, j) {
-        if(j >= 0 && j < this._field_height){
-            if(i >= 0 && i < this._field_width){
+        if (j >= 0 && j < this._fieldHeight) {
+            if (i >= 0 && i < this._fieldWidth) {
                 return 1;
             }
         }
@@ -37,42 +34,40 @@ export class Model {
     }
 
     _checkingAliveNeighbours(i, j) {
-        let alive_neighbours = 0;
+        let aliveNeighbours = 0;
 
-        for(let y = j - 1; y <= j + 1; y++){
-            for(let x = i - 1; x <= i + 1; x++){
-                if(x === i && y === j){
-                    continue;
-                } else {
-                    if(this._isElementInsideField(x, y) && this._cells[x][y] === 1){
-                        alive_neighbours++;
+        for (let y = j - 1; y <= j + 1; y += 1) {
+            for (let x = i - 1; x <= i + 1; x += 1) {
+                if (!(x === i && y === j)) {
+                    if (this._isElementInsideField(x, y) && this._cells[x][y] === 1) {
+                        aliveNeighbours += 1;
                     }
                 }
             }
         }
 
-        return alive_neighbours;
+        return aliveNeighbours;
     }
 
     nextCellStates() {
-        let changing_cells = [];
+        const changingCells = [];
 
-        for(let i = 0; i < this._field_height; i++){
-            for(let j = 0; j < this._field_width; j++){
-                let alive_neighbours_counter = 0;
+        for (let i = 0; i < this._fieldHeight; i += 1) {
+            for (let j = 0; j < this._fieldWidth; j += 1) {
+                let aliveNeighboursCounter = 0;
 
-                alive_neighbours_counter = this._checkingAliveNeighbours(i, j);
+                aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
 
-                if(this._cells[i][j] === 0 && alive_neighbours_counter === 3){
-                    changing_cells.push([i, j]);
-                } else if (this._cells[i][j] === 1 && alive_neighbours_counter < 2){
-                    changing_cells.push([i, j]);
-                } else if (this._cells[i][j] === 1 && alive_neighbours_counter > 3){
-                    changing_cells.push([i, j]);
+                if (this._cells[i][j] === 0 && aliveNeighboursCounter === 3) {
+                    changingCells.push([i, j]);
+                } else if (this._cells[i][j] === 1 && aliveNeighboursCounter < 2) {
+                    changingCells.push([i, j]);
+                } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
+                    changingCells.push([i, j]);
                 }
             }
         }
 
-        return changing_cells;
+        return changingCells;
     }
 }
