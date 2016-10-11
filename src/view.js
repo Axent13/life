@@ -20,8 +20,8 @@ export default class View {
         return resultingField;
     }
 
-    changeCellState(cell) {
-        cell.toggleClass('alive dead');
+    changeCellState($cell) {
+        $cell.toggleClass('alive dead');
 
         return cell.attr('class');
     }
