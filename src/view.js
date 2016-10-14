@@ -23,6 +23,6 @@ export default class View {
     changeCellState($cell) {
         $cell.toggleClass('alive dead');
 
-        return cell.attr('class');
+        return $cell.attr('class');
     }
 }
