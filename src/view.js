@@ -10,11 +10,11 @@ export default class View {
         for (let i = 0; i < this._fieldHeight; i += 1) {
             resultingField += '<tr>';
             for (let j = 0; j < this._fieldWidth; j += 1) {
-                resultingField += `<td id=\'${i}-${j}\' class=\'dead\'></td>`;
+                resultingField += `<td data-position=\'${i}-${j}\' class=\'dead\'></td>`;
             }
             resultingField += '</tr>';
         }
-        const $gameField = $('#game-field');
+        const $gameField = $('.js-game-field');
         $gameField.html(resultingField);
 
         return resultingField;

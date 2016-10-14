@@ -14,20 +14,20 @@ export default class Controller {
         $('td').click( function() {
             that._view.changeCellState($(this));
 
-            const [x, y] = $(this).attr('id').split('-');
+            const [x, y] = $(this).attr('data-position').split('-');
             that._model.changeCellState(x, y);
         });
 
-        $('#start-button').click( function() {
+        $('.js-start-button').click( function() {
             $(this).attr('disabled', 'true');
-            const $pauseButton = $('#pause-button');
+            const $pauseButton = $('.js-pause-button');
             $pauseButton.removeAttr('disabled');
             that._isPaused = false;
         });
 
-        $('#pause-button').click( function() {
+        $('.js-pause-button').click( function() {
             $(this).attr('disabled', 'true');
-            const $startButton = $('#start-button');
+            const $startButton = $('.js-start-button');
             $startButton.removeAttr('disabled');
             that._isPaused = true;
         });
@@ -38,8 +38,8 @@ export default class Controller {
         for (let i = 0; i < changingCells.length; i += 1) {
             this._model.changeCellState(changingCells[i][0], changingCells[i][1]);
 
-            const currentID = `#${changingCells[i][0]}-${changingCells[i][1]}`;
-            this._view.changeCellState($(currentID));
+            const currentPosition = `${changingCells[i][0]}-${changingCells[i][1]}`;
+            this._view.changeCellState($(`[data-position = ${currentPosition}]`));
         }
     }
 }
