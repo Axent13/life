@@ -1,7 +1,7 @@
 import Model from './model.js';
 import View from './view.js';
 
-export default class Controller {
+class Controller {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._view = new View(fieldWidth, fieldHeight);
@@ -58,3 +58,5 @@ export default class Controller {
         return this;
     }
 }
+
+export default Controller;

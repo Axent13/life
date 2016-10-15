@@ -1,4 +1,4 @@
-export default class View {
+class View {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._fieldWidth = fieldWidth;
@@ -26,3 +26,5 @@ export default class View {
         return $cell.attr('class');
     }
 }
+
+export default View;

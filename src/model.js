@@ -1,4 +1,4 @@
-export default class Model {
+class Model {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._fieldWidth = fieldWidth;
@@ -76,3 +76,5 @@ export default class Model {
         return aliveNeighbours;
     }
 }
+
+export default Model;
