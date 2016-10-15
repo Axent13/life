@@ -41,5 +41,7 @@ export default class Controller {
             const currentPosition = `${changingCells[i][0]}-${changingCells[i][1]}`;
             this._view.changeCellState($(`[data-position = ${currentPosition}]`));
         }
+
+        return this;
     }
 }

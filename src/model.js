@@ -16,11 +16,11 @@ export default class Model {
     changeCellState(x, y) {
         if (this._cells[x][y] === 1) {
             this._cells[x][y] = 0;
-
-            return 0;
+        } else {
+            this._cells[x][y] = 1;
         }
-        this._cells[x][y] = 1;
-        return 1;
+
+        return this;
     }
 
     nextCellStates() {
