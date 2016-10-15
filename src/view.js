@@ -10,7 +10,7 @@ class View {
         for (let i = 0; i < this._fieldHeight; i += 1) {
             resultingField += '<tr>';
             for (let j = 0; j < this._fieldWidth; j += 1) {
-                resultingField += `<td data-position=\'${i}-${j}\' class=\'dead\'></td>`;
+                resultingField += this._createNewCell(i, j);
             }
             resultingField += '</tr>';
         }
@@ -18,6 +18,10 @@ class View {
         $gameField.html(resultingField);
 
         return resultingField;
+    }
+
+    _createNewCell(i, j) {
+        return `<td data-position=\'${i}-${j}\' class=\'dead\'></td>`;
     }
 
     changeCellState($cell) {

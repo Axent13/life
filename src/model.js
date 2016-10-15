@@ -4,8 +4,12 @@ class Model {
         this._fieldWidth = fieldWidth;
         this._fieldHeight = fieldHeight;
         this._changingCells = [];
-
         this._cells = [];
+
+        this._createEmptyFeild();
+    }
+
+    _createEmptyFeild() {
         for (let i = 0; i < this._fieldHeight; i += 1) {
             this._cells[i] = [];
             for (let j = 0; j < this._fieldWidth; j += 1) {
