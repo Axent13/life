@@ -3,6 +3,7 @@ export default class Model {
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._fieldWidth = fieldWidth;
         this._fieldHeight = fieldHeight;
+        this._changingCells = [];
 
         this._cells = [];
         for (let i = 0; i < this._fieldHeight; i += 1) {
@@ -24,7 +25,7 @@ export default class Model {
     }
 
     nextCellStates() {
-        const changingCells = [];
+        this._changingCells = [];
 
         this._cells.forEach((row, i) => {
             row.forEach((item, j) => {
@@ -33,15 +34,20 @@ export default class Model {
                 aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
 
                 if (this._cells[i][j] === 0 && aliveNeighboursCounter === 3) {
-                    changingCells.push([i, j]);
+                    this._changingCells.push([i, j]);
                 } else if (this._cells[i][j] === 1 && aliveNeighboursCounter < 2) {
-                    changingCells.push([i, j]);
+                    this._changingCells.push([i, j]);
                 } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
-                    changingCells.push([i, j]);
+                    this._changingCells.push([i, j]);
                 }
             });
         });
-        return changingCells;
+
+        this._changingCells.forEach((coords) => {
+            this.changeCellState(coords[0], coords[1]);
+        });
+
+        return this._changingCells;
     }
 
     _isElementInsideField(i, j) {
