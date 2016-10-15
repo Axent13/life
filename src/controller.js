@@ -8,7 +8,7 @@ class Controller {
         this._model = new Model(fieldWidth, fieldHeight);
         this._isPaused = true;
 
-        this._view.drawField();
+        this._view.drawField(this._model.getCells());
 
         this.changeCellStateEvent();
         this.startButtonEvent();
@@ -16,13 +16,11 @@ class Controller {
     }
 
     changeCellStateEvent() {
-        $('td').click((event) => {
-            this._view.changeCellState($(event.currentTarget));
-
+        $('.js-game-field').on('click', 'td', (event) => {
             const [x, y] = $(event.currentTarget).attr('data-position').split('-');
             this._model.changeCellState(x, y);
+            this._view.drawField(this._model.getCells());
         });
-
         return this;
     }
 
@@ -49,11 +47,8 @@ class Controller {
     }
 
     nextStep() {
-        const changingCells = this._model.nextCellStates();
-        changingCells.forEach((item, i) => {
-            const currentPosition = `${changingCells[i][0]}-${changingCells[i][1]}`;
-            this._view.changeCellState($(`[data-position = ${currentPosition}]`));
-        });
+        this._model.nextCellStates();
+        this._view.drawField(this._model.getCells());
 
         return this;
     }

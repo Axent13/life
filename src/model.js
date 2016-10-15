@@ -18,6 +18,10 @@ class Model {
         }
     }
 
+    getCells() {
+        return this._cells;
+    }
+
     changeCellState(x, y) {
         if (this._cells[x][y] === 1) {
             this._cells[x][y] = 0;
