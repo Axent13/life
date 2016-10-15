@@ -35,12 +35,12 @@ export default class Controller {
 
     nextStep() {
         const changingCells = this._model.nextCellStates();
-        for (let i = 0; i < changingCells.length; i += 1) {
+        changingCells.forEach((item, i) => {
             this._model.changeCellState(changingCells[i][0], changingCells[i][1]);
 
             const currentPosition = `${changingCells[i][0]}-${changingCells[i][1]}`;
             this._view.changeCellState($(`[data-position = ${currentPosition}]`));
-        }
+        });
 
         return this;
     }

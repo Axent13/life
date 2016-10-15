@@ -26,8 +26,8 @@ export default class Model {
     nextCellStates() {
         const changingCells = [];
 
-        for (let i = 0; i < this._fieldHeight; i += 1) {
-            for (let j = 0; j < this._fieldWidth; j += 1) {
+        this._cells.forEach((row, i) => {
+            row.forEach((item, j) => {
                 let aliveNeighboursCounter = 0;
 
                 aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
@@ -39,9 +39,8 @@ export default class Model {
                 } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
                     changingCells.push([i, j]);
                 }
-            }
-        }
-
+            });
+        });
         return changingCells;
     }
 
