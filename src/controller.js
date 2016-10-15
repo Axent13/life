@@ -10,27 +10,42 @@ export default class Controller {
 
         this._view.drawField();
 
-        const that = this;
-        $('td').click( function() {
-            that._view.changeCellState($(this));
+        this.changeCellStateEvent();
+        this.startButtonEvent();
+        this.pauseButtonEvent();
+    }
 
-            const [x, y] = $(this).attr('data-position').split('-');
-            that._model.changeCellState(x, y);
+    changeCellStateEvent() {
+        $('td').click((event) => {
+            this._view.changeCellState($(event.currentTarget));
+
+            const [x, y] = $(event.currentTarget).attr('data-position').split('-');
+            this._model.changeCellState(x, y);
         });
 
-        $('.js-start-button').click( function() {
-            $(this).attr('disabled', 'true');
+        return this;
+    }
+
+    startButtonEvent() {
+        $('.js-start-button').click((event) => {
+            $(event.currentTarget).attr('disabled', 'true');
             const $pauseButton = $('.js-pause-button');
             $pauseButton.removeAttr('disabled');
-            that._isPaused = false;
+            this._isPaused = false;
         });
 
-        $('.js-pause-button').click( function() {
-            $(this).attr('disabled', 'true');
+        return this;
+    }
+
+    pauseButtonEvent() {
+        $('.js-pause-button').click(() => {
+            $(event.currentTarget).attr('disabled', 'true');
             const $startButton = $('.js-start-button');
             $startButton.removeAttr('disabled');
-            that._isPaused = true;
+            this._isPaused = true;
         });
+
+        return this;
     }
 
     nextStep() {
