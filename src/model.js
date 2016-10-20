@@ -5,28 +5,30 @@ class Model {
         this._fieldHeight = fieldHeight;
         this._changingCells = [];
         this._cells = [];
-
-        this._createEmptyFeild();
-    }
-
-    _createEmptyFeild() {
-        for (let i = 0; i < this._fieldHeight; i += 1) {
-            this._cells[i] = [];
-            for (let j = 0; j < this._fieldWidth; j += 1) {
-                this._cells[i][j] = 0;
-            }
-        }
     }
 
     getCells() {
         return this._cells;
     }
 
+    createEmptyField() {
+        for (let i = 0; i < this._fieldHeight; i += 1) {
+            this._cells[i] = [];
+            for (let j = 0; j < this._fieldWidth; j += 1) {
+                this._cells[i][j] = 0;
+            }
+        }
+
+        return this;
+    }
+
     changeCellState(x, y) {
-        if (this._cells[x][y] === 1) {
-            this._cells[x][y] = 0;
-        } else {
-            this._cells[x][y] = 1;
+        if (this._isElementInsideField(x, y) === 1) {
+            if (this._cells[x][y] === 1) {
+                this._cells[x][y] = 0;
+            } else {
+                this._cells[x][y] = 1;
+            }
         }
 
         return this;

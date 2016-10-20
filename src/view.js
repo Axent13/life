@@ -31,12 +31,6 @@ class View {
 
         return newCell;
     }
-
-    changeCellState($cell) {
-        $cell.toggleClass('alive dead');
-
-        return $cell.attr('class');
-    }
 }
 
 export default View;

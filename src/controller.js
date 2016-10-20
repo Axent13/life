@@ -6,6 +6,7 @@ class Controller {
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._view = new View(fieldWidth, fieldHeight);
         this._model = new Model(fieldWidth, fieldHeight);
+        this._model.createEmptyField();
         this._isPaused = true;
 
         this._view.drawField(this._model.getCells());
