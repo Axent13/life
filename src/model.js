@@ -23,7 +23,7 @@ class Model {
     }
 
     changeCellState(x, y) {
-        if (this._isElementInsideField(x, y) === 1) {
+        if (this._isElementInsideField(y, x) === 1) {
             if (this._cells[x][y] === 1) {
                 this._cells[x][y] = 0;
             } else {

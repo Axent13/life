@@ -4,6 +4,26 @@ import View from '../src/view.js';
 const assert = require('assert');
 
 describe('Model testing:', () => {
+    describe('Checking constructor', () => {
+        it('input fieldWidth should be equal to property _fieldWidth', () => {
+            const fieldWidth = 10;
+            const model = new Model(fieldWidth, 1);
+
+            assert.equal(model._fieldWidth, fieldWidth);
+        });
+        it('input fieldHeight should be equal to property _fieldHeight', () => {
+            const fieldHeight = 10;
+            const model = new Model(1, fieldHeight);
+
+            assert.equal(model._fieldHeight, fieldHeight);
+        });
+        it('properties _fieldWidth and _fieldHeight should be 30 in default', () => {
+            const model = new Model();
+
+            assert.equal(model._fieldWidth, 30);
+            assert.equal(model._fieldHeight, 30);
+        });
+    });
     describe('Checking getCells()', () => {
         it('Should return [[1, 1, 1], [0, 0, 0]]', () => {
             const model = new Model(3, 2);
