@@ -4,8 +4,11 @@ import View from './view.js';
 class Controller {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
-        this._view = new View(fieldWidth, fieldHeight);
-        this._model = new Model(fieldWidth, fieldHeight);
+        this._fieldWidth = fieldWidth;
+        this._fieldHeight = fieldHeight;
+
+        this._view = new View(this._fieldWidth, this._fieldHeight);
+        this._model = new Model(this._fieldWidth, this._fieldHeight);
         this._model.createEmptyField();
         this._isPaused = true;
 
