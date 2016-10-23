@@ -21,12 +21,12 @@ class View {
     }
 
     _createNewCell(i, j, cellState) {
-        let newCell = `<td data-position=\'${i}-${j}\' class=`;
+        let newCell = `<td data-position=\"${i}-${j}\" class=`;
 
         if (cellState === 1) {
-            newCell += '\'alive\'></td>';
+            newCell += '\"alive\"></td>';
         } else {
-            newCell += '\'dead\'></td>';
+            newCell += '\"dead\"></td>';
         }
 
         return newCell;
