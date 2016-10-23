@@ -4,21 +4,21 @@ module.exports = function (config) {
 
         basePath: '../',
 
-        frameworks: ['mocha', 'chai', 'jquery-1.8.3'],
+        frameworks: ['mocha', 'chai', 'jquery-1.8.3', 'sinon'],
 
         files: [
-            'test/test.js'
+            'test/*.spec.js'
         ],
 
         preprocessors: {
-            'test/test.js': ['webpack']
+            'test/*.spec.js': ['webpack']
         },
 
         webpack: {
             module: {
 
                 loaders: [{
-                    test:   /\.js$/,
+                    test: /\.js$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
                     query: {
@@ -35,7 +35,8 @@ module.exports = function (config) {
             require('karma-mocha'),
             require('karma-chai'),
             require('karma-mocha-reporter'),
-            require('karma-jquery')
+            require('karma-jquery'),
+            require('karma-sinon')
         ],
 
         reporters: ['mocha'],

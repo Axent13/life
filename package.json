@@ -9,6 +9,7 @@
     "babel-loader": "^6.2.5",
     "babel-core": "^6.14.0",
     "webpack": "^1.13.2",
+    "sinon": "^1.17.6",
     "chai": "^3.5.0"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "karma-jquery": "^0.1.0",
     "karma-mocha": "^1.1.1",
     "karma-mocha-reporter": "^2.1.0",
+    "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.0.2",
