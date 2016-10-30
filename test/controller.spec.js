@@ -54,4 +54,122 @@ describe('Controller testing', () => {
             assert.deepEqual(result, [[0, 1], [1, 0], [1, 2], [2, 1]]);
         });
     });
+    describe('Checking startButtonEvent()', () => {
+        beforeEach(() => {
+            const testBody = '<form class="control">' +
+                '<button class="start-button js-start-button">Начать</button>' +
+                '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+                '</form>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+        it('Click on the js-start-button makes _isPaused to be false', () => {
+            const controller = new Controller();
+
+            const $startButton = $('.js-start-button');
+            $startButton.trigger('click');
+
+            assert.equal(controller._isPaused, false);
+        });
+        it('Click on the js-start-button adds attr disabled to itself', () => {
+            const controller = new Controller();
+
+            const $startButton = $('.js-start-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-start-button').prop('disabled'), true);
+        });
+        it('Click on the js-start-button deletes attr disabled from js-pause-button', () => {
+            const controller = new Controller();
+
+            const $startButton = $('.js-start-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-pause-button').prop('disabled'), false);
+        });
+    });
+    describe('Checking pauseButtonEvent()', () => {
+        beforeEach(() => {
+            const testBody = '<form class="control">' +
+                '<button class="start-button js-start-button">Начать</button>' +
+                '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+                '</form>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+        it('Click on the js-pause-button makes _isPaused to be true', () => {
+            const controller = new Controller();
+            controller._isPaused = false;
+
+            const $startButton = $('.js-pause-button');
+            $startButton.trigger('click');
+
+            assert.equal(controller._isPaused, true);
+        });
+        it('Click on the js-pause-button adds attr disabled to itself', () => {
+            const controller = new Controller();
+
+            const $startButton = $('.js-pause-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-pause-button').prop('disabled'), true);
+        });
+        it('Click on the js-pause-button deletes attr disabled from js-start-button', () => {
+            const controller = new Controller();
+
+            const $startButton = $('.js-pause-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-start-button').prop('disabled'), false);
+        });
+    });
+    describe('Checking changeCellStateEvent()', () => {
+        beforeEach(() => {
+            const testBody = '<table class="game-field js-game-field"></table>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+
+        it('Click on dead cell changes it class to alive', () => {
+            const controller = new Controller(1, 1);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+            $cell = $('td');
+
+            assert.equal($cell.hasClass('alive'), true);
+        });
+        it('Click on dead cell removes class dead from it', () => {
+            const controller = new Controller(1, 1);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+            $cell = $('td');
+
+            assert.equal($cell.hasClass('dead'), false);
+        });
+        it('Click on alive cell changes it class to dead', () => {
+            const controller = new Controller(1, 1);
+            controller._model.changeCellState(0, 0);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+            $cell = $('td');
+
+            assert.equal($cell.hasClass('dead'), true);
+        });
+        it('Click on alive cell removes class alive from it', () => {
+            const controller = new Controller(1, 1);
+            controller._model.changeCellState(0, 0);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+            $cell = $('td');
+
+            assert.equal($cell.hasClass('alive'), false);
+        });
+    });
 });
