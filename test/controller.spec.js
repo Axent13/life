@@ -172,4 +172,42 @@ describe('Controller testing', () => {
             assert.equal($cell.hasClass('alive'), false);
         });
     });
+    describe('Checking initializeInterval()', () => {
+        it('should not run if _isPaused === true', () => {
+            const controller = new Controller();
+            sinon.spy(Controller.prototype, 'nextStep');
+
+            expect(Controller.prototype.nextStep.called).to.be.false;
+            Controller.prototype.nextStep.restore();
+        });
+        it('should not run if _isPaused === false but not passed at least 1 second', () => {
+            let clock = sinon.useFakeTimers();
+
+            const controller = new Controller();
+            sinon.spy(Controller.prototype, 'nextStep');
+
+            expect(Controller.prototype.nextStep.called).to.be.false;
+
+            controller._isPaused = true;
+            clock.tick(500);
+            expect(Controller.prototype.nextStep.called).to.be.false;
+
+            Controller.prototype.nextStep.restore();
+            clock.restore();
+        });
+        it('should run if _isPaused === false and passed at least 1 second', () => {
+            let clock = sinon.useFakeTimers();
+
+            const controller = new Controller();
+            sinon.spy(Controller.prototype, 'nextStep');
+
+            expect(Controller.prototype.nextStep.called).to.be.false;
+
+            controller._isPaused = false;
+            clock.tick(1000);
+            expect(Controller.prototype.nextStep.called).to.be.true;
+
+            clock.restore();
+        });
+    });
 });
