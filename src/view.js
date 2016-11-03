@@ -1,28 +1,36 @@
-export default class View {
+class View {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
-        this._field_width = fieldWidth;
-        this._field_height = fieldHeight;
+        this._fieldWidth = fieldWidth;
+        this._fieldHeight = fieldHeight;
     }
 
-    drawField() {
+    drawField(cells) {
         let resultingField = '';
-        for (let i = 0; i < this._field_height; i += 1) {
+        for (let i = 0; i < this._fieldHeight; i += 1) {
             resultingField += '<tr>';
-            for (let j = 0; j < this._field_width; j += 1) {
-                resultingField += `<td id=\'${i}-${j}\' class=\'dead\'></td>`;
+            for (let j = 0; j < this._fieldWidth; j += 1) {
+                resultingField += this._createNewCell(i, j, cells[i][j]);
             }
             resultingField += '</tr>';
         }
-        const $gameField = $('#game-field');
+        const $gameField = $('.js-game-field');
         $gameField.html(resultingField);
 
         return resultingField;
     }
 
-    changeCellState(cell) {
-        cell.toggleClass('alive dead');
+    _createNewCell(i, j, cellState) {
+        let newCell = `<td data-position=\"${i}-${j}\" class=`;
 
-        return cell.attr('class');
+        if (cellState === 1) {
+            newCell += '\"alive\"></td>';
+        } else {
+            newCell += '\"dead\"></td>';
+        }
+
+        return newCell;
     }
 }
+
+export default View;

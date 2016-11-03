@@ -1,9 +1,10 @@
 import Controller from './controller.js';
 
-const controller = new Controller();
+const startGame = () => {
+    const controller = new Controller();
+    controller.initializeInterval();
+};
 
-setInterval(() => {
-    if (!controller._isPaused) {
-        controller.nextStep();
-    }
-}, 1000);
+startGame();
+
+export default startGame;

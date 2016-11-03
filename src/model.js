@@ -1,48 +1,63 @@
-export default class Model {
+class Model {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._fieldWidth = fieldWidth;
         this._fieldHeight = fieldHeight;
-
+        this._changingCells = [];
         this._cells = [];
+    }
+
+    getCells() {
+        return this._cells;
+    }
+
+    createEmptyField() {
         for (let i = 0; i < this._fieldHeight; i += 1) {
             this._cells[i] = [];
             for (let j = 0; j < this._fieldWidth; j += 1) {
                 this._cells[i][j] = 0;
             }
         }
+
+        return this;
     }
 
     changeCellState(x, y) {
-        if (this._cells[x][y] === 1) {
-            this._cells[x][y] = 0;
-
-            return 0;
+        if (this._isElementInsideField(y, x) === 1) {
+            if (this._cells[x][y] === 1) {
+                this._cells[x][y] = 0;
+            } else {
+                this._cells[x][y] = 1;
+            }
         }
-        this._cells[x][y] = 1;
-        return 1;
+
+        return this;
     }
 
     nextCellStates() {
-        const changingCells = [];
+        this._changingCells = [];
 
-        for (let i = 0; i < this._fieldHeight; i += 1) {
-            for (let j = 0; j < this._fieldWidth; j += 1) {
+        this._cells.forEach((row, i) => {
+            row.forEach((item, j) => {
                 let aliveNeighboursCounter = 0;
 
                 aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
 
                 if (this._cells[i][j] === 0 && aliveNeighboursCounter === 3) {
-                    changingCells.push([i, j]);
+                    this._changingCells.push([i, j]);
                 } else if (this._cells[i][j] === 1 && aliveNeighboursCounter < 2) {
-                    changingCells.push([i, j]);
+                    this._changingCells.push([i, j]);
                 } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
-                    changingCells.push([i, j]);
+                    this._changingCells.push([i, j]);
                 }
-            }
-        }
+            });
+        });
 
-        return changingCells;
+        this._changingCells.forEach((coords) => {
+            this.changeCellState(coords[0], coords[1]);
+        });
+
+        return this._changingCells;
     }
 
     _isElementInsideField(i, j) {
@@ -71,3 +86,5 @@ export default class Model {
         return aliveNeighbours;
     }
 }
+
+export default Model;

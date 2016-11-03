@@ -1,1 +1,9 @@
-Game Of Life by Axent13
+#Game Of Life by Axent13
+##Как запустить:
+Переходим в директорию с проектом:
+`npm install`
+
+После установки необходимых модулей:
+`npm run build`
+
+Открываем **localhost:8080** в браузере.
