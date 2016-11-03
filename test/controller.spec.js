@@ -175,6 +175,7 @@ describe('Controller testing', () => {
     describe('Checking initializeInterval()', () => {
         it('should not run if _isPaused === true', () => {
             const controller = new Controller();
+            controller.initializeInterval();
             let spy = sinon.spy(Controller.prototype, 'nextStep');
 
             expect(spy.called).to.be.false;
@@ -184,6 +185,8 @@ describe('Controller testing', () => {
             let clock = sinon.useFakeTimers();
 
             const controller = new Controller();
+            controller.initializeInterval();
+
             let spy = sinon.spy(Controller.prototype, 'nextStep');
 
             expect(spy.called).to.be.false;
@@ -199,6 +202,8 @@ describe('Controller testing', () => {
             let clock = sinon.useFakeTimers();
 
             const controller = new Controller();
+            controller.initializeInterval();
+
             let spy = sinon.spy(Controller.prototype, 'nextStep');
 
             expect(spy.called).to.be.false;

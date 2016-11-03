@@ -17,7 +17,6 @@ class Controller {
         this.changeCellStateEvent();
         this.startButtonEvent();
         this.pauseButtonEvent();
-        this.initializeInterval();
     }
 
     changeCellStateEvent() {
