@@ -1,14 +1,14 @@
 import startGame from '../src/application.js';
 import Controller from '../src/controller.js';
 
-describe('Checking starGame()', () => {
-    it('should successfully create the object', () => {
+describe('Checking startGame()', () => {
+    it('should NOT begin game before controller is created', () => {
         let spy = sinon.spy(Controller.prototype, 'initializeInterval');
 
         expect(spy.called).to.be.false;
         spy.restore();
      });
-    it('should successfully create the object', () => {
+    it('should succedfully begin game after controller is created', () => {
         let spy = sinon.spy(Controller.prototype, 'initializeInterval');
 
         startGame();
