@@ -31,6 +31,138 @@ describe('View testing:', () => {
             assert.equal(view._fieldHeight, 30);
         });
     });
+    describe('Checking startButtonBind()', () => {
+        beforeEach(() => {
+            const testBody = '<form class="control">' +
+                '<button class="start-button js-start-button">Начать</button>' +
+                '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+                '</form>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+        it('Click on the js-start-button adds attr disabled to itself', () => {
+            const view = new View();
+
+            const $startButton = $('.js-start-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-start-button').prop('disabled'), true);
+        });
+        it('Click on the js-start-button deletes attr disabled from js-pause-button', () => {
+            const view = new View();
+
+            const $startButton = $('.js-start-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-pause-button').prop('disabled'), false);
+        });
+    });
+    describe('Checking pauseButtonBind()', () => {
+        beforeEach(() => {
+            const testBody = '<form class="control">' +
+                '<button class="start-button js-start-button">Начать</button>' +
+                '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+                '</form>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+        it('Click on the js-pause-button adds attr disabled to itself', () => {
+            const view = new View();
+
+            const $startButton = $('.js-pause-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-pause-button').prop('disabled'), true);
+        });
+        it('Click on the js-pause-button deletes attr disabled from js-start-button', () => {
+            const view = new View();
+
+            const $startButton = $('.js-pause-button');
+            $startButton.trigger('click');
+
+            assert.equal($('.js-start-button').prop('disabled'), false);
+        });
+    });
+    describe('Checking changeCellStateBind()', () => {
+        beforeEach(() => {
+            const testBody = '<table class="game-field js-game-field"><tr>' +
+                '<td data-position="0-0" class="dead"></td></tr></table>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+
+        it('Click on dead cell changes it class to alive', () => {
+            const view = new View(1, 1);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+
+            assert.equal($cell.hasClass('alive'), true);
+        });
+        it('Click on dead cell removes class dead from it', () => {
+            const view = new View(1, 1);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+
+            assert.equal($cell.hasClass('dead'), false);
+        });
+    });
+    describe('Checking getCellsStates()', () => {
+        beforeEach(() => {
+            const testBody = '<table class="game-field js-game-field"><tr>' +
+                '<td data-position="0-0" class="dead"></td></tr></table>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+        it('Click on dead cell changes it class to alive', () => {
+            const view = new View(1, 1);
+
+            const result = view.getCellsStates();
+
+            assert.equal(result, 'dead');
+        });
+        it('Click on dead cell removes class dead from it', () => {
+            const view = new View(1, 1);
+
+            let $cell = $('td');
+            $cell.trigger('click');
+            const result = view.getCellsStates();
+
+            assert.equal(result, 'alive');
+        });
+    });
+    describe('Checking getGameState()', () => {
+        beforeEach(() => {
+            const testBody = '<form class="control">' +
+                '<button class="start-button js-start-button">Начать</button>' +
+                '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+                '</form>';
+
+            const $body = $('body');
+            $body.html(testBody);
+        });
+        it('if js-start-button is disabled then game wont start', () => {
+            const view = new View();
+
+            const $startButton = $('.js-start-button');
+            $startButton.trigger('click');
+            const result = view.getGameState();
+
+            assert.equal(result, false);
+        });
+        it('if js-pause-button is enabled then game will start', () => {
+            const view = new View();
+
+            const result = view.getGameState();
+
+            assert.equal(result, true);
+        });
+    });
     describe('Checking drawField()', () => {
         it('0x0 field', () => {
             const view = new View(0, 0);

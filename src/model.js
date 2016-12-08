@@ -22,6 +22,18 @@ class Model {
         return this;
     }
 
+    updateStates(newCellsStates) {
+        this._cells.forEach((row, i) => {
+            row.forEach((item, j) => {
+                if (newCellsStates.shift() === 'alive') {
+                    this._cells[i][j] = 1;
+                } else {
+                    this._cells[i][j] = 0;
+                }
+            });
+        });
+    }
+
     changeCellState(x, y) {
         if (this._isElementInsideField(y, x) === 1) {
             if (this._cells[x][y] === 1) {
