@@ -14,12 +14,12 @@ class Controller {
 
         this._view.drawField(this._model.getCells());
 
-        this.changeCellStateEvent();
-        this.startButtonEvent();
-        this.pauseButtonEvent();
+        this.changeCellStateBind();
+        this.startButtonBind();
+        this.pauseButtonBind();
     }
 
-    changeCellStateEvent() {
+    changeCellStateBind() {
         $('.js-game-field').on('click', 'td', (event) => {
             const [x, y] = $(event.currentTarget).attr('data-position').split('-');
             this._model.changeCellState(x, y);
@@ -28,7 +28,7 @@ class Controller {
         return this;
     }
 
-    startButtonEvent() {
+    startButtonBind() {
         $('.js-start-button').click((event) => {
             $(event.currentTarget).attr('disabled', 'true');
             const $pauseButton = $('.js-pause-button');
@@ -39,7 +39,7 @@ class Controller {
         return this;
     }
 
-    pauseButtonEvent() {
+    pauseButtonBind() {
         $('.js-pause-button').click((event) => {
             $(event.currentTarget).attr('disabled', 'true');
             const $startButton = $('.js-start-button');
