@@ -34,7 +34,8 @@
     "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack-dev-server --config webpack/webpack.config.js",
+    "build": "./node_modules/.bin/webpack --config webpack/webpack.config.js",
+    "dev": "./node_modules/.bin/webpack-dev-server --config webpack/webpack.config.js",
     "test": "./node_modules/.bin/karma start karma/karma.conf.js"
   },
   "repository": {
