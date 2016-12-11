@@ -1,7 +1,11 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
-    entry: "./src/application.js",
+    entry: "./src/js/application.js",
     output: {
-        filename: "./build/bundle.js"
+        path: "build",
+        filename: "bundle.js"
     },
 
     module: {
@@ -14,7 +18,22 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "babel-loader"
+            },
+            {
+                test: /\.pug$/,
+                loader: 'pug'
             }
         ]
-    }
+    },
+
+    resolve: {
+        modulesDirectories: ['node_modules'],
+        extensions: ['', '.js', '.pug']
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'src/index.pug'
+        }),
+        new ExtractTextPlugin("styles.css")
+    ]
 };

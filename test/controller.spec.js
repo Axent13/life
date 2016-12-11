@@ -1,4 +1,4 @@
-import Controller from '../src/controller.js';
+import Controller from '../src/js/controller.js';
 
 const assert = require('assert');
 

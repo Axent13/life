@@ -1,5 +1,5 @@
-import Model from '../src/model.js';
-import View from '../src/view.js';
+import Model from '../src/js/model.js';
+import View from '../src/js/view.js';
 
 const assert = require('assert');
 

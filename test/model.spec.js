@@ -1,4 +1,4 @@
-import Model from '../src/model.js';
+import Model from '../src/js/model.js';
 
 const assert = require('assert');
 
