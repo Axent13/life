@@ -12,10 +12,12 @@ class Model {
     }
 
     createEmptyField() {
-        this._cells = Array.from({ length: this._fieldHeight }, () => {
-            const col = new Array(this._fieldWidth).fill(0);
-            return col;
-        });
+        for (let i = 0; i < this._fieldHeight; i += 1) {
+            this._cells[i] = [];
+            for (let j = 0; j < this._fieldWidth; j += 1) {
+                this._cells[i][j] = 0;
+            }
+        }
 
         return this;
     }
@@ -82,10 +84,11 @@ class Model {
 
     _checkingAliveNeighbours(i, j) {
         let aliveNeighbours = 0;
-        for (let y = -1; y <= 1; y += 1) {
-            for (let x = -1; x <= 1; x += 1) {
-                if (!(x === 0 && y === 0)) {
-                    if (this._isElementInsideField(i + x, j + y) && this._cells[i + x][j + y] === 1) {
+
+        for (let y = j - 1; y <= j + 1; y += 1) {
+            for (let x = i - 1; x <= i + 1; x += 1) {
+                if (!(x === i && y === j)) {
+                    if (this._isElementInsideField(x, y) && this._cells[x][y] === 1) {
                         aliveNeighbours += 1;
                     }
                 }
