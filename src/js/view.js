@@ -1,3 +1,5 @@
+var template = require('../createCells.pug');
+
 class View {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
@@ -56,18 +58,16 @@ class View {
     }
 
     drawField(cells) {
-        let resultingField = '';
-        for (let i = 0; i < this._fieldHeight; i += 1) {
-            resultingField += '<tr>';
-            for (let j = 0; j < this._fieldWidth; j += 1) {
-                resultingField += this._createNewCell(i, j, cells[i][j]);
-            }
-            resultingField += '</tr>';
-        }
         const $gameField = $('.js-game-field');
-        $gameField.html(resultingField);
 
-        return resultingField;
+        const locals = {
+            fieldHeight: this._fieldHeight,
+            fieldWidth: this._fieldWidth
+        };
+
+        $gameField.html(template(locals));
+
+        return this;
     }
 
     _createNewCell(i, j, cellState) {

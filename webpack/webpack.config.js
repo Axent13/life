@@ -1,13 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+
 module.exports = {
     entry: "./src/js/application.js",
     output: {
         path: "build",
         filename: "bundle.js"
     },
-
     module: {
         loaders: [
             {
@@ -20,12 +20,15 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
+                test: /\.json$/,
+                loader: 'json-loader'
+            },
+            {
                 test: /\.pug$/,
                 loader: 'pug'
             }
         ]
     },
-
     resolve: {
         modulesDirectories: ['node_modules'],
         extensions: ['', '.js', '.pug']

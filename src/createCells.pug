@@ -1,0 +1,11 @@
+mixin createCells(fieldHeight, fieldWidth)
+    - var i = 0
+    while i < fieldHeight
+        tr
+            - var j = 0
+            while  j < fieldWidth
+                td.dead
+                - j += 1
+            - i += 1
+
++createCells(fieldHeight, fieldWidth)
