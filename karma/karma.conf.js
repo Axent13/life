@@ -1,3 +1,5 @@
+const webpackConfig = require('../webpack/webpack.config.js');
+
 module.exports = function (config) {
 
     config.set({
@@ -7,7 +9,7 @@ module.exports = function (config) {
         frameworks: ['mocha', 'chai', 'jquery-1.8.3', 'sinon'],
 
         files: [
-            'test/*.spec.js'
+            'test/*.spec.js',
         ],
 
         preprocessors: {
@@ -15,18 +17,7 @@ module.exports = function (config) {
         },
 
         webpack: {
-            module: {
-
-                loaders: [{
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: 'babel-loader',
-                    query: {
-                        presets: ['es2015']
-                    }
-                }]
-
-            }
+            module: webpackConfig.module
         },
 
         plugins: [

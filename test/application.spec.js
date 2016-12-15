@@ -1,5 +1,5 @@
-import startGame from '../src/application.js';
-import Controller from '../src/controller.js';
+import startGame from '../src/js/application.js';
+import Controller from '../src/js/controller.js';
 
 describe('Checking startGame()', () => {
     it('should NOT begin game before controller is created', () => {
