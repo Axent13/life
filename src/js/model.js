@@ -3,8 +3,17 @@ class Model {
     constructor(fieldWidth = 30, fieldHeight = 30) {
         this._fieldWidth = fieldWidth;
         this._fieldHeight = fieldHeight;
+        this._isPaused = true;
         this._changingCells = [];
         this._cells = [];
+    }
+
+    getGameState() {
+        return !this._isPaused;
+    }
+
+    setGameState(newState) {
+        this._isPaused = !newState;
     }
 
     getCells() {
@@ -73,7 +82,7 @@ class Model {
         for (let y = -1; y <= 1; y += 1) {
             for (let x = -1; x <= 1; x += 1) {
                 if (!(x === 0 && y === 0)) {
-                    if (this._isElementInsideField(i + x, j + y) && this._cells[i + x][j + y] === 1) {
+                        if (this._isElementInsideField(i + x, j + y) && this._cells[i + x][j + y] === 1) {
                         aliveNeighbours += 1;
                     }
                 }

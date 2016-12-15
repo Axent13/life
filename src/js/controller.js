@@ -7,24 +7,22 @@ class Controller {
         this._fieldWidth = fieldWidth;
         this._fieldHeight = fieldHeight;
 
-
         this._view = new View(this._fieldWidth, this._fieldHeight);
         this.gameStateListen();
         this.changeCellListen();
 
         this._model = new Model(this._fieldWidth, this._fieldHeight);
         this._model.createEmptyField();
-        this._isPaused = true;
 
         this._view.drawField(this._model.getCells());
     }
 
     gameStateListen() {
         this._view.on('startGame', () => {
-            this._isPaused = false;
+            this._model.setGameState(true);
         });
         this._view.on('pauseGame', () => {
-            this._isPaused = true;
+            this._model.setGameState(false);
         });
     }
 
@@ -37,7 +35,7 @@ class Controller {
 
     initializeInterval() {
         setInterval(() => {
-            if (!this._isPaused) {
+            if (this._model.getGameState()) {
                 this.nextStep();
             }
         }, 1000);
