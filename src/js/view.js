@@ -1,4 +1,4 @@
-var template = require('../createCells.pug');
+const templateCreateCells = require('../createCells.pug');
 
 class View {
 
@@ -62,24 +62,13 @@ class View {
 
         const locals = {
             fieldHeight: this._fieldHeight,
-            fieldWidth: this._fieldWidth
+            fieldWidth: this._fieldWidth,
+            cellsStates: cells
         };
 
-        $gameField.html(template(locals));
+        $gameField.html(templateCreateCells(locals));
 
-        return this;
-    }
-
-    _createNewCell(i, j, cellState) {
-        let newCell = `<td data-position=\"${i}-${j}\" class=`;
-
-        if (cellState === 1) {
-            newCell += '\"alive\"></td>';
-        } else {
-            newCell += '\"dead\"></td>';
-        }
-
-        return newCell;
+        return $gameField.html();
     }
 }
 

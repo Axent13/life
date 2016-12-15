@@ -188,7 +188,7 @@ describe('View testing:', () => {
             const view = new View(1, 1);
 
             const resultingField = view.drawField(model.getCells());
-            const expectingResult = '<tr><td data-position="0-0" class="dead"></td></tr>';
+            const expectingResult = '<tr><td class="dead" data-position="0-0"></td></tr>';
 
             assert.equal(resultingField, expectingResult);
         });
@@ -200,8 +200,8 @@ describe('View testing:', () => {
             view.drawField(model.getCells());
             const $body = $('body');
             const result = $body.html();
-            const expectingResult = '<table class="game-field js-game-field"><tbody>' +
-                '<tr><td data-position="0-0" class="dead"></td></tr></tbody></table>';
+            const expectingResult = '<table class="game-field js-game-field">' +
+                '<tr><td class="dead" data-position="0-0"></td></tr></table>';
 
             assert.equal(result, expectingResult);
         });
@@ -211,7 +211,7 @@ describe('View testing:', () => {
             const view = new View(2, 1);
 
             const resultingField = view.drawField(model.getCells());
-            const expectingResult = '<tr><td data-position="0-0" class="dead"></td><td data-position="0-1" class="dead"></td></tr>';
+            const expectingResult = '<tr><td class="dead" data-position="0-0"></td><td class="dead" data-position="0-1"></td></tr>';
 
             assert.equal(resultingField, expectingResult);
         });
@@ -224,46 +224,12 @@ describe('View testing:', () => {
             const $body = $('body');
             const result = $body.html();
 
-            const expectingResult = '<table class="game-field js-game-field"><tbody><tr>' +
-                '<td data-position="0-0" class="dead"></td>' +
-                '<td data-position="0-1" class="dead"></td>' +
-                '</tr></tbody></table>';
+            const expectingResult = '<table class="game-field js-game-field"><tr>' +
+                '<td class="dead" data-position="0-0"></td>' +
+                '<td class="dead" data-position="0-1"></td>' +
+                '</tr></table>';
 
             assert.equal(result, expectingResult);
-        });
-    });
-    describe('Checking _createNewCell(i, j, cellState)', () => {
-        it('Should create dead cell with position (0, 0)', () => {
-            const view = new View();
-
-            const resultingCell = view._createNewCell(0, 0, 0);
-            const expectingResult = '<td data-position="0-0" class="dead"></td>';
-
-            assert.equal(resultingCell, expectingResult);
-        });
-        it('Should create alive cell with position (0, 0)', () => {
-            const view = new View();
-
-            const resultingCell = view._createNewCell(0, 0, 1);
-            const expectingResult = '<td data-position="0-0" class="alive"></td>';
-
-            assert.equal(resultingCell, expectingResult);
-        });
-        it('Should create dead cell with position (10, 0)', () => {
-            const view = new View();
-
-            const resultingCell = view._createNewCell(10, 0, 0);
-            const expectingResult = '<td data-position="10-0" class="dead"></td>';
-
-            assert.equal(resultingCell, expectingResult);
-        });
-        it('Should create alive cell with position (0, 10)', () => {
-            const view = new View();
-
-            const resultingCell = view._createNewCell(0, 10, 1);
-            const expectingResult = '<td data-position="0-10" class="alive"></td>';
-
-            assert.equal(resultingCell, expectingResult);
         });
     });
 });
