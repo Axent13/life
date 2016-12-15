@@ -16,6 +16,8 @@ class View extends eventEmitter {
     changeCellStateBind() {
         $('.js-game-field').on('click', 'td', (event) => {
             $(event.currentTarget).toggleClass('alive dead');
+            const cellPosition = $(event.currentTarget).attr('data-position');
+            this.emit('changeCell', cellPosition);
         });
 
         return this;
@@ -26,6 +28,8 @@ class View extends eventEmitter {
             $(event.currentTarget).attr('disabled', 'true');
             const $pauseButton = $('.js-pause-button');
             $pauseButton.removeAttr('disabled');
+
+            this.emit('startGame');
         });
 
         return this;
@@ -36,27 +40,11 @@ class View extends eventEmitter {
             $(event.currentTarget).attr('disabled', 'true');
             const $startButton = $('.js-start-button');
             $startButton.removeAttr('disabled');
+
+            this.emit('pauseGame');
         });
 
         return this;
-    }
-
-    getCellsStates() {
-        const cellsStates = [];
-
-        $('td').each((index, element) => {
-            cellsStates.push($(element).attr('class'));
-        });
-
-        return cellsStates;
-    }
-
-    getGameState() {
-        const $startButton = $('.js-start-button');
-        if ($startButton.attr('disabled') === 'disabled') {
-            return false;
-        }
-        return true;
     }
 
     drawField(cells) {
