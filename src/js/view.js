@@ -1,8 +1,10 @@
 const templateCreateCells = require('../createCells.pug');
+const eventEmitter = require('events');
 
-class View {
+class View extends eventEmitter {
 
     constructor(fieldWidth = 30, fieldHeight = 30) {
+        super();
         this._fieldWidth = fieldWidth;
         this._fieldHeight = fieldHeight;
 
@@ -67,6 +69,8 @@ class View {
         };
 
         $gameField.html(templateCreateCells(locals));
+
+        this.emit('event');
 
         return $gameField.html();
     }
