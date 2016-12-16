@@ -41,6 +41,32 @@ class Model {
     return this;
   }
 
+  nextCellStates() {
+    this._changingCells = [];
+
+    this._cells.forEach((row, i) => {
+      row.forEach((item, j) => {
+        let aliveNeighboursCounter = 0;
+
+        aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
+
+        if (!this._isCellAlive(i, j) && this._isNeighboursOk(aliveNeighboursCounter)) {
+          this._changingCells.push([i, j]);
+        } else if (this._isCellAlive(i, j) && this._isNeighboursFew(aliveNeighboursCounter)) {
+          this._changingCells.push([i, j]);
+        } else if (this._isCellAlive(i, j) && this._isNeighboursMany(aliveNeighboursCounter)) {
+          this._changingCells.push([i, j]);
+        }
+      });
+    });
+
+    this._changingCells.forEach((coords) => {
+      this.changeCellState(coords[0], coords[1]);
+    });
+
+    return this._changingCells;
+  }
+
   _isCellAlive(i, j) {
     if (this._cells[i][j] === 0) {
       return false;
@@ -67,32 +93,6 @@ class Model {
       return true;
     }
     return false;
-  }
-
-  nextCellStates() {
-    this._changingCells = [];
-
-    this._cells.forEach((row, i) => {
-      row.forEach((item, j) => {
-        let aliveNeighboursCounter = 0;
-
-        aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
-
-        if (!this._isCellAlive(i, j) && this._isNeighboursOk(aliveNeighboursCounter)) {
-          this._changingCells.push([i, j]);
-        } else if (this._isCellAlive(i, j) && this._isNeighboursFew(aliveNeighboursCounter)) {
-          this._changingCells.push([i, j]);
-        } else if (this._isCellAlive(i, j) && this._isNeighboursMany(aliveNeighboursCounter)) {
-          this._changingCells.push([i, j]);
-        }
-      });
-    });
-
-    this._changingCells.forEach((coords) => {
-      this.changeCellState(coords[0], coords[1]);
-    });
-
-    return this._changingCells;
   }
 
   _isElementInsideField(i, j) {

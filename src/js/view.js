@@ -8,44 +8,11 @@ class View extends eventEmitter {
     this._fieldWidth = fieldWidth;
     this._fieldHeight = fieldHeight;
 
-    this.startButtonBind();
-    this.pauseButtonBind();
-    this.changeCellStateBind();
+    this._startButtonBind();
+    this._pauseButtonBind();
+    this._changeCellStateBind();
   }
 
-  changeCellStateBind() {
-    $('.js-game-field').on('click', 'td', (event) => {
-      $(event.currentTarget).toggleClass('alive dead');
-      const cellPosition = $(event.currentTarget).attr('data-position');
-      this.emit('changeCell', cellPosition);
-    });
-
-    return this;
-  }
-
-  startButtonBind() {
-    $('.js-start-button').click((event) => {
-      $(event.currentTarget).attr('disabled', 'true');
-      const $pauseButton = $('.js-pause-button');
-      $pauseButton.removeAttr('disabled');
-
-      this.emit('startGame');
-    });
-
-    return this;
-  }
-
-  pauseButtonBind() {
-    $('.js-pause-button').click((event) => {
-      $(event.currentTarget).attr('disabled', 'true');
-      const $startButton = $('.js-start-button');
-      $startButton.removeAttr('disabled');
-
-      this.emit('pauseGame');
-    });
-
-    return this;
-  }
   drawField(cells) {
     const $gameField = $('.js-game-field');
 
@@ -61,6 +28,41 @@ class View extends eventEmitter {
 
     return $gameField.html();
   }
+
+  _changeCellStateBind() {
+    $('.js-game-field').on('click', 'td', (event) => {
+      $(event.currentTarget).toggleClass('alive dead');
+      const cellPosition = $(event.currentTarget).attr('data-position');
+      this.emit('changeCell', cellPosition);
+    });
+
+    return this;
+  }
+
+  _startButtonBind() {
+    $('.js-start-button').click((event) => {
+      $(event.currentTarget).attr('disabled', 'true');
+      const $pauseButton = $('.js-pause-button');
+      $pauseButton.removeAttr('disabled');
+
+      this.emit('startGame');
+    });
+
+    return this;
+  }
+
+  _pauseButtonBind() {
+    $('.js-pause-button').click((event) => {
+      $(event.currentTarget).attr('disabled', 'true');
+      const $startButton = $('.js-start-button');
+      $startButton.removeAttr('disabled');
+
+      this.emit('pauseGame');
+    });
+
+    return this;
+  }
+
 }
 
 export default View;

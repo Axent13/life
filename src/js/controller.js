@@ -8,29 +8,13 @@ class Controller {
     this._fieldHeight = fieldHeight;
 
     this._view = new View(this._fieldWidth, this._fieldHeight);
-    this.gameStateListen();
-    this.changeCellListen();
+    this._gameStateListen();
+    this._changeCellListen();
 
     this._model = new Model(this._fieldWidth, this._fieldHeight);
     this._model.createEmptyField();
 
     this._view.drawField(this._model.getCells());
-  }
-
-  gameStateListen() {
-    this._view.on('startGame', () => {
-      this._model.setGameState(true);
-    });
-    this._view.on('pauseGame', () => {
-      this._model.setGameState(false);
-    });
-  }
-
-  changeCellListen() {
-    this._view.on('changeCell', (cellPosition) => {
-      const [x, y] = cellPosition.split('-');
-      this._model.changeCellState(x, y);
-    });
   }
 
   initializeInterval() {
@@ -47,6 +31,23 @@ class Controller {
 
     return this;
   }
+
+  _gameStateListen() {
+    this._view.on('startGame', () => {
+      this._model.setGameState(true);
+    });
+    this._view.on('pauseGame', () => {
+      this._model.setGameState(false);
+    });
+  }
+
+  _changeCellListen() {
+    this._view.on('changeCell', (cellPosition) => {
+      const [x, y] = cellPosition.split('-');
+      this._model.changeCellState(x, y);
+    });
+  }
+
 }
 
 export default Controller;
