@@ -19,7 +19,7 @@ class View extends eventEmitter {
     const locals = {
       fieldHeight: this._fieldHeight,
       fieldWidth: this._fieldWidth,
-      cellsStates: cells
+      cellsStates: cells,
     };
 
     $gameField.html(templateCreateCells(locals));

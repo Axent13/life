@@ -46,15 +46,13 @@ class Model {
 
     this._cells.forEach((row, i) => {
       row.forEach((item, j) => {
-        let aliveNeighboursCounter = 0;
+        const aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
 
-        aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
-
-        if (!this._isCellAlive(i, j) && this._isNeighboursOk(aliveNeighboursCounter)) {
+        if (!this._isCellAlive(i, j) && Model.isNeighboursOk(aliveNeighboursCounter)) {
           this._changingCells.push([i, j]);
-        } else if (this._isCellAlive(i, j) && this._isNeighboursFew(aliveNeighboursCounter)) {
+        } else if (this._isCellAlive(i, j) && Model.isNeighboursFew(aliveNeighboursCounter)) {
           this._changingCells.push([i, j]);
-        } else if (this._isCellAlive(i, j) && this._isNeighboursMany(aliveNeighboursCounter)) {
+        } else if (this._isCellAlive(i, j) && Model.isNeighboursMany(aliveNeighboursCounter)) {
           this._changingCells.push([i, j]);
         }
       });
@@ -68,31 +66,19 @@ class Model {
   }
 
   _isCellAlive(i, j) {
-    if (this._cells[i][j] === 0) {
-      return false;
-    }
-    return true;
+    return this._cells[i][j] === 1;
   }
 
-  _isNeighboursFew(neighboursCount) {
-    if (neighboursCount < 2) {
-      return true;
-    }
-    return false;
+  static isNeighboursFew(neighboursCount) {
+    return neighboursCount < 2;
   }
 
-  _isNeighboursMany(neighboursCount) {
-    if (neighboursCount > 3) {
-      return true;
-    }
-    return false;
+  static isNeighboursMany(neighboursCount) {
+    return neighboursCount > 3;
   }
 
-  _isNeighboursOk(neighboursCount) {
-    if (neighboursCount === 3) {
-      return true;
-    }
-    return false;
+  static isNeighboursOk(neighboursCount) {
+    return neighboursCount === 3;
   }
 
   _isElementInsideField(i, j) {

@@ -9,6 +9,8 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
     "chai": "^3.5.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "html-webpack-plugin": "^2.24.1",
     "pug": "^2.0.0-beta6",
     "sinon": "^1.17.6",
     "webpack": "^1.13.2"
