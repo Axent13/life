@@ -106,16 +106,20 @@ class Model {
   }
 
   _checkingAliveNeighbours(i, j) {
-    let aliveNeighbours = 0;
-    for (let y = -1; y <= 1; y += 1) {
-      for (let x = -1; x <= 1; x += 1) {
+    const neighbourIndexes = [-1, 0, 1];
+
+    const aliveNeighbours = neighbourIndexes.reduce((totalSum, y) => {
+      const middleSum = neighbourIndexes.reduce((sum, x) => {
         if (!(x === 0 && y === 0)) {
           if (this._isElementInsideField(i + x, j + y) && this._isCellAlive(i + x, j + y)) {
-            aliveNeighbours += 1;
+            return sum + 1;
           }
         }
-      }
-    }
+        return sum;
+      }, 0);
+
+      return totalSum + middleSum;
+    }, 0);
 
     return aliveNeighbours;
   }
