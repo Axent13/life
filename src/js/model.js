@@ -41,6 +41,34 @@ class Model {
     return this;
   }
 
+  _isCellAlive(i, j) {
+    if (this._cells[i][j] === 0) {
+      return false;
+    }
+    return true;
+  }
+
+  _isNeighboursFew(neighboursCount) {
+    if (neighboursCount < 2) {
+      return true;
+    }
+    return false;
+  }
+
+  _isNeighboursMany(neighboursCount) {
+    if (neighboursCount > 3) {
+      return true;
+    }
+    return false;
+  }
+
+  _isNeighboursOk(neighboursCount) {
+    if (neighboursCount === 3) {
+      return true;
+    }
+    return false;
+  }
+
   nextCellStates() {
     this._changingCells = [];
 
@@ -50,11 +78,11 @@ class Model {
 
         aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
 
-        if (this._cells[i][j] === 0 && aliveNeighboursCounter === 3) {
+        if (!this._isCellAlive(i, j) && this._isNeighboursOk(aliveNeighboursCounter)) {
           this._changingCells.push([i, j]);
-        } else if (this._cells[i][j] === 1 && aliveNeighboursCounter < 2) {
+        } else if (this._isCellAlive(i, j) && this._isNeighboursFew(aliveNeighboursCounter)) {
           this._changingCells.push([i, j]);
-        } else if (this._cells[i][j] === 1 && aliveNeighboursCounter > 3) {
+        } else if (this._isCellAlive(i, j) && this._isNeighboursMany(aliveNeighboursCounter)) {
           this._changingCells.push([i, j]);
         }
       });
@@ -82,7 +110,7 @@ class Model {
     for (let y = -1; y <= 1; y += 1) {
       for (let x = -1; x <= 1; x += 1) {
         if (!(x === 0 && y === 0)) {
-          if (this._isElementInsideField(i + x, j + y) && this._cells[i + x][j + y] === 1) {
+          if (this._isElementInsideField(i + x, j + y) && this._isCellAlive(i + x, j + y)) {
             aliveNeighbours += 1;
           }
         }
