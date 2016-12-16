@@ -3,65 +3,64 @@ const eventEmitter = require('events');
 
 class View extends eventEmitter {
 
-    constructor(fieldWidth = 30, fieldHeight = 30) {
-        super();
-        this._fieldWidth = fieldWidth;
-        this._fieldHeight = fieldHeight;
+  constructor(fieldWidth = 30, fieldHeight = 30) {
+    super();
+    this._fieldWidth = fieldWidth;
+    this._fieldHeight = fieldHeight;
 
-        this.startButtonBind();
-        this.pauseButtonBind();
-        this.changeCellStateBind();
-    }
+    this.startButtonBind();
+    this.pauseButtonBind();
+    this.changeCellStateBind();
+  }
 
-    changeCellStateBind() {
-        $('.js-game-field').on('click', 'td', (event) => {
-            $(event.currentTarget).toggleClass('alive dead');
-            const cellPosition = $(event.currentTarget).attr('data-position');
-            this.emit('changeCell', cellPosition);
-        });
+  changeCellStateBind() {
+    $('.js-game-field').on('click', 'td', (event) => {
+      $(event.currentTarget).toggleClass('alive dead');
+      const cellPosition = $(event.currentTarget).attr('data-position');
+      this.emit('changeCell', cellPosition);
+    });
 
-        return this;
-    }
+    return this;
+  }
 
-    startButtonBind() {
-        $('.js-start-button').click((event) => {
-            $(event.currentTarget).attr('disabled', 'true');
-            const $pauseButton = $('.js-pause-button');
-            $pauseButton.removeAttr('disabled');
+  startButtonBind() {
+    $('.js-start-button').click((event) => {
+      $(event.currentTarget).attr('disabled', 'true');
+      const $pauseButton = $('.js-pause-button');
+      $pauseButton.removeAttr('disabled');
 
-            this.emit('startGame');
-        });
+      this.emit('startGame');
+    });
 
-        return this;
-    }
+    return this;
+  }
 
-    pauseButtonBind() {
-        $('.js-pause-button').click((event) => {
-            $(event.currentTarget).attr('disabled', 'true');
-            const $startButton = $('.js-start-button');
-            $startButton.removeAttr('disabled');
+  pauseButtonBind() {
+    $('.js-pause-button').click((event) => {
+      $(event.currentTarget).attr('disabled', 'true');
+      const $startButton = $('.js-start-button');
+      $startButton.removeAttr('disabled');
 
-            this.emit('pauseGame');
-        });
+      this.emit('pauseGame');
+    });
 
-        return this;
-    }
+    return this;
+  }
+  drawField(cells) {
+    const $gameField = $('.js-game-field');
 
-    drawField(cells) {
-        const $gameField = $('.js-game-field');
+    const locals = {
+      fieldHeight: this._fieldHeight,
+      fieldWidth: this._fieldWidth,
+      cellsStates: cells
+    };
 
-        const locals = {
-            fieldHeight: this._fieldHeight,
-            fieldWidth: this._fieldWidth,
-            cellsStates: cells
-        };
+    $gameField.html(templateCreateCells(locals));
 
-        $gameField.html(templateCreateCells(locals));
+    this.emit('event');
 
-        this.emit('event');
-
-        return $gameField.html();
-    }
+    return $gameField.html();
+  }
 }
 
 export default View;
