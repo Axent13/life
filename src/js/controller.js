@@ -43,8 +43,8 @@ class Controller {
 
   _changeCellListen() {
     this._view.on('changeCell', (cellPosition) => {
-      const [x, y] = cellPosition.split('-');
-      this._model.changeCellState(x, y);
+      const [xCoordinate, yCoordinate] = cellPosition.split('-');
+      this._model.changeCellState(xCoordinate, yCoordinate);
     });
   }
 

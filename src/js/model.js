@@ -29,12 +29,12 @@ class Model {
     return this;
   }
 
-  changeCellState(x, y) {
-    if (this._isElementInsideField(y, x) === 1) {
-      if (this._cells[x][y] === 1) {
-        this._cells[x][y] = 0;
+  changeCellState(xPos, yPos) {
+    if (this._isElementInsideField(xPos, yPos) === 1) {
+      if (this._cells[xPos][yPos] === 1) {
+        this._cells[xPos][yPos] = 0;
       } else {
-        this._cells[x][y] = 1;
+        this._cells[xPos][yPos] = 1;
       }
     }
 
@@ -44,16 +44,16 @@ class Model {
   nextCellStates() {
     this._changingCells = [];
 
-    this._cells.forEach((row, i) => {
-      row.forEach((item, j) => {
-        const aliveNeighboursCounter = this._checkingAliveNeighbours(i, j);
+    this._cells.forEach((row, yPos) => {
+      row.forEach((item, xPos) => {
+        const aliveNeighboursCounter = this._checkingAliveNeighbours(xPos, yPos);
 
-        if (!this._isCellAlive(i, j) && Model.isNeighboursOk(aliveNeighboursCounter)) {
-          this._changingCells.push([i, j]);
-        } else if (this._isCellAlive(i, j) && Model.isNeighboursFew(aliveNeighboursCounter)) {
-          this._changingCells.push([i, j]);
-        } else if (this._isCellAlive(i, j) && Model.isNeighboursMany(aliveNeighboursCounter)) {
-          this._changingCells.push([i, j]);
+        if (!this._isCellAlive(xPos, yPos) && Model.isNeighboursOk(aliveNeighboursCounter)) {
+          this._changingCells.push([xPos, yPos]);
+        } else if (this._isCellAlive(xPos, yPos) && Model.isNeighboursFew(aliveNeighboursCounter)) {
+          this._changingCells.push([xPos, yPos]);
+        } else if (this._isCellAlive(xPos, yPos) && Model.isNeighboursMany(aliveNeighboursCounter)) {
+          this._changingCells.push([xPos, yPos]);
         }
       });
     });
@@ -65,8 +65,8 @@ class Model {
     return this._changingCells;
   }
 
-  _isCellAlive(i, j) {
-    return this._cells[i][j] === 1;
+  _isCellAlive(xPos, yPos) {
+    return this._cells[xPos][yPos] === 1;
   }
 
   static isNeighboursFew(neighboursCount) {
@@ -81,9 +81,13 @@ class Model {
     return neighboursCount === 3;
   }
 
-  _isElementInsideField(i, j) {
-    if (j >= 0 && j < this._fieldHeight) {
-      if (i >= 0 && i < this._fieldWidth) {
+  static isItNeighbour(xPos, yPos) {
+    return !(xPos === 0 && yPos === 0);
+  }
+
+  _isElementInsideField(xPos, yPos) {
+    if (yPos >= 0 && yPos < this._fieldHeight) {
+      if (xPos >= 0 && xPos < this._fieldWidth) {
         return 1;
       }
     }
@@ -91,13 +95,17 @@ class Model {
     return 0;
   }
 
-  _checkingAliveNeighbours(i, j) {
+  _isNeighbourAlive(xPos, yPos) {
+    return this._isElementInsideField(xPos, yPos) && this._isCellAlive(xPos, yPos);
+  }
+
+  _checkingAliveNeighbours(xPos, yPos) {
     const neighbourIndexes = [-1, 0, 1];
 
-    const aliveNeighbours = neighbourIndexes.reduce((totalSum, y) => {
-      const middleSum = neighbourIndexes.reduce((sum, x) => {
-        if (!(x === 0 && y === 0)) {
-          if (this._isElementInsideField(i + x, j + y) && this._isCellAlive(i + x, j + y)) {
+    const aliveNeighbours = neighbourIndexes.reduce((totalSum, yNeighbourPos) => {
+      const middleSum = neighbourIndexes.reduce((sum, xNeighbourPos) => {
+        if (Model.isItNeighbour(xNeighbourPos, yNeighbourPos)) {
+          if (this._isNeighbourAlive(xPos + xNeighbourPos, yPos + yNeighbourPos)) {
             return sum + 1;
           }
         }
