@@ -1,4 +1,5 @@
 import Controller from '../src/js/controller.js';
+import Model from '../src/js/model.js';
 
 const assert = require('assert');
 
@@ -42,8 +43,8 @@ describe('Controller testing', () => {
     });
     it('cell [0, 0] will change after nextStep()', () => {
       const controller = new Controller(3, 3);
+      controller._model.changeCellState(0, 0);
 
-      $('[data-position=0-0]').toggleClass('alive dead');
       controller.nextStep();
 
       const result = controller._model._changingCells;
@@ -61,13 +62,14 @@ describe('Controller testing', () => {
     it('1x3 line should change 4 cells after nextStep()', () => {
       const controller = new Controller(3, 3);
 
-      $('[data-position=1-0]').toggleClass('alive dead');
-      $('[data-position=1-1]').toggleClass('alive dead');
-      $('[data-position=1-2]').toggleClass('alive dead');
+      controller._model.changeCellState(1, 0);
+      controller._model.changeCellState(1, 1);
+      controller._model.changeCellState(1, 2);
+
       controller.nextStep();
 
       const result = controller._model._changingCells;
-      assert.deepEqual(result, [[0, 1], [1, 0], [1, 2], [2, 1]]);
+      assert.deepEqual(result, [[1, 0], [0, 1], [2, 1], [1, 2]]);
     });
   });
 
@@ -124,6 +126,56 @@ describe('Controller testing', () => {
 
       spy.restore();
       clock.restore();
+    });
+  });
+
+  describe('Checking gameStateListen()', () => {
+    it('should call model.setGameState(), after view emits startGame', () => {
+      const controller = new Controller();
+
+      let spy = sinon.spy(Model.prototype, 'setGameState');
+      expect(spy.called).to.be.false;
+
+      controller._view.emit('startGame');
+
+      expect(spy.called).to.be.true;
+      spy.restore();
+    });
+    it('should call model.setGameState(), after view emits pauseGame', () => {
+      const controller = new Controller();
+
+      let spy = sinon.spy(Model.prototype, 'setGameState');
+      expect(spy.called).to.be.false;
+
+      controller._view.emit('pauseGame');
+
+      expect(spy.called).to.be.true;
+      spy.restore();
+    });
+  });
+
+  describe('Checking changeCellListen()', () => {
+    it('should call model.changeCellState(), after view emits changeCell', () => {
+      const controller = new Controller();
+
+      let spy = sinon.spy(Model.prototype, 'changeCellState');
+      expect(spy.called).to.be.false;
+
+      controller._view.emit('changeCell', '0-0');
+
+      expect(spy.called).to.be.true;
+      spy.restore();
+    });
+    it('should call model.changeCellState() with parameters (0,0), after view emits changeCell', () => {
+      const controller = new Controller();
+
+      let spy = sinon.spy(Model.prototype, 'changeCellState');
+      expect(spy.called).to.be.false;
+
+      controller._view.emit('changeCell', '0-0');
+
+      sinon.assert.calledWith(spy, '0', '0');
+      spy.restore();
     });
   });
 });

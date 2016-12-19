@@ -23,6 +23,42 @@ describe('Model testing:', () => {
       assert.equal(model._fieldHeight, 30);
     });
   });
+  describe('Checking getGameState()', () => {
+    it('Should return true, if game is not paused', () => {
+      const model = new Model();
+      model._isPaused = false;
+
+      const expectingResult = model.getGameState();
+
+      assert.equal(expectingResult, true);
+    });
+    it('Should return false, if game is paused', () => {
+      const model = new Model();
+      model._isPaused = true;
+
+      const expectingResult = model.getGameState();
+
+      assert.equal(expectingResult, false);
+    });
+  });
+  describe('Checking setGameState()', () => {
+    it('Game must be paused, if incoming argument false', () => {
+      const model = new Model();
+      model.setGameState(false);
+
+      const expectingResult = model._isPaused;
+
+      assert.equal(expectingResult, true);
+    });
+    it('Game must not be paused, if incoming argument true', () => {
+      const model = new Model();
+      model.setGameState(true);
+
+      const expectingResult = model._isPaused;
+
+      assert.equal(expectingResult, false);
+    });
+  });
   describe('Checking getCells()', () => {
     it('Should return [[1, 1, 1], [0, 0, 0]]', () => {
       const model = new Model(3, 2);
@@ -106,7 +142,7 @@ describe('Model testing:', () => {
       model.changeCellState(2, 3);
 
       const changingCells = model.nextCellStates();
-      assert.deepEqual(changingCells, [[1, 2], [2, 1], [2, 3], [3, 2]]);
+      assert.deepEqual(changingCells, [[2, 1], [1, 2], [3, 2], [2, 3]]);
     });
 
     it('moving colony makes a step', () => {
@@ -121,6 +157,143 @@ describe('Model testing:', () => {
 
       const changingCells = model.nextCellStates();
       assert.deepEqual(changingCells, [[1, 1], [1, 2], [2, 2], [3, 3]]);
+    });
+  });
+  describe('Checking _isCellAlive()', () => {
+    it('Must return true, if cell is alive', () => {
+      const model = new Model(1, 1);
+      model.createEmptyField();
+
+      model.changeCellState(0, 0);
+
+      const expectingResult = model._isCellAlive(0, 0);
+      assert.equal(expectingResult, true);
+    });
+    it('Must return false, if cell is dead', () => {
+      const model = new Model(1, 1);
+      model.createEmptyField();
+
+      const expectingResult = model._isCellAlive(0, 0);
+      assert.equal(expectingResult, false);
+    });
+  });
+  describe('Checking isNeghboursFew()', () => {
+    it('Must return true, if neighbours < 2', () => {
+      const expectingResult = Model.isNeighboursFew(0);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return true, if neighbours < 2', () => {
+      const expectingResult = Model.isNeighboursFew(1);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return false, if neighbours >= 2', () => {
+      const expectingResult = Model.isNeighboursFew(2);
+
+      assert.equal(expectingResult, false);
+    });
+    it('Must return false, if neighbours >= 2', () => {
+      const expectingResult = Model.isNeighboursFew(8);
+
+      assert.equal(expectingResult, false);
+    });
+  });
+  describe('Checking isNeghboursMany()', () => {
+    it('Must return true, if neighbours > 3', () => {
+      const expectingResult = Model.isNeighboursMany(4);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return true, if neighbours > 3', () => {
+      const expectingResult = Model.isNeighboursMany(8);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return true, if neighbours <= 3', () => {
+      const expectingResult = Model.isNeighboursMany(3);
+
+      assert.equal(expectingResult, false);
+    });
+    it('Must return true, if neighbours <= 3', () => {
+      const expectingResult = Model.isNeighboursMany(0);
+
+      assert.equal(expectingResult, false);
+    });
+  });
+  describe('Checking isNeghboursOk()', () => {
+    it('Must return true, if neighbours === 3', () => {
+      const expectingResult = Model.isNeighboursOk(3);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return true, if neighbours !== 3', () => {
+      const expectingResult = Model.isNeighboursOk(2);
+
+      assert.equal(expectingResult, false);
+    });
+    it('Must return true, if neighbours !== 3', () => {
+      const expectingResult = Model.isNeighboursOk(0);
+
+      assert.equal(expectingResult, false);
+    });
+    it('Must return true, if neighbours !== 3', () => {
+      const expectingResult = Model.isNeighboursOk(8);
+
+      assert.equal(expectingResult, false);
+    });
+  });
+  describe('Checking isItNeighbour()', () => {
+    it('Must return false, if both arguments === 0', () => {
+      const expectingResult = Model.isItNeighbour(0, 0);
+
+      assert.equal(expectingResult, false);
+    });
+    it('Must return true, if one of the arguments !== 0', () => {
+      const expectingResult = Model.isItNeighbour(0, 1);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return true, if one of the arguments !== 0', () => {
+      const expectingResult = Model.isItNeighbour(1, 0);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return true, if both arguments !== 0', () => {
+      const expectingResult = Model.isItNeighbour(1, 1);
+
+      assert.equal(expectingResult, true);
+    });
+  });
+  describe('Checking _isNeighbourAlive()', () => {
+    it('Should return true, if neighbour cell is alive', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      model.changeCellState(0, 0);
+      model.changeCellState(1, 0);
+
+      const expectingResult = model._isNeighbourAlive(0, 0);
+      assert.equal(expectingResult, true);
+    });
+    it('Should return false, if neighbour cell is dead', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      model.changeCellState(0, 0);
+      model.changeCellState(1, 0);
+
+      const expectingResult = model._isNeighbourAlive(0, 2);
+      assert.equal(expectingResult, false);
+    });
+    it('Should return false, if neighbour out if field', () => {
+      const model = new Model();
+      model.createEmptyField();
+
+      model.changeCellState(0, 0);
+
+      const expectingResult = model._isNeighbourAlive(0, 10);
+      assert.equal(expectingResult, false);
     });
   });
   describe('Checking _isElementInsideField(i, j)', () => {
@@ -232,7 +405,6 @@ describe('Model testing:', () => {
 
       assert.equal(aliveNeighbours, 0);
     });
-
     it('2x2 square', () => {
       const model = new Model(3, 3);
       model.createEmptyField();

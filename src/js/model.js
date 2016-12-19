@@ -86,8 +86,8 @@ class Model {
   }
 
   _isElementInsideField(xPos, yPos) {
-    if (yPos >= 0 && yPos < this._fieldHeight) {
-      if (xPos >= 0 && xPos < this._fieldWidth) {
+    if (yPos >= 0 && yPos < this._fieldWidth) {
+      if (xPos >= 0 && xPos < this._fieldHeight) {
         return 1;
       }
     }

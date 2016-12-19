@@ -10,7 +10,6 @@ describe('View testing:', () => {
 
     $body.html(testBody);
   });
-
   describe('Checking constructor', () => {
     it('input fieldWidth should be equal to property _fieldWidth', () => {
       const fieldWidth = 10;
@@ -29,86 +28,6 @@ describe('View testing:', () => {
 
       assert.equal(view._fieldWidth, 30);
       assert.equal(view._fieldHeight, 30);
-    });
-  });
-  describe('Checking startButtonBind()', () => {
-    beforeEach(() => {
-      const testBody = '<form class="control">' +
-        '<button class="start-button js-start-button">Начать</button>' +
-        '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
-        '</form>';
-
-      const $body = $('body');
-      $body.html(testBody);
-    });
-    it('Click on the js-start-button adds attr disabled to itself', () => {
-      const view = new View();
-
-      const $startButton = $('.js-start-button');
-      $startButton.trigger('click');
-
-      assert.equal($('.js-start-button').prop('disabled'), true);
-    });
-    it('Click on the js-start-button deletes attr disabled from js-pause-button', () => {
-      const view = new View();
-
-      const $startButton = $('.js-start-button');
-      $startButton.trigger('click');
-
-      assert.equal($('.js-pause-button').prop('disabled'), false);
-    });
-  });
-  describe('Checking pauseButtonBind()', () => {
-    beforeEach(() => {
-      const testBody = '<form class="control">' +
-        '<button class="start-button js-start-button">Начать</button>' +
-        '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
-        '</form>';
-
-      const $body = $('body');
-      $body.html(testBody);
-    });
-    it('Click on the js-pause-button adds attr disabled to itself', () => {
-      const view = new View();
-
-      const $startButton = $('.js-pause-button');
-      $startButton.trigger('click');
-
-      assert.equal($('.js-pause-button').prop('disabled'), true);
-    });
-    it('Click on the js-pause-button deletes attr disabled from js-start-button', () => {
-      const view = new View();
-
-      const $startButton = $('.js-pause-button');
-      $startButton.trigger('click');
-
-      assert.equal($('.js-start-button').prop('disabled'), false);
-    });
-  });
-  describe('Checking changeCellStateBind()', () => {
-    beforeEach(() => {
-      const testBody = '<table class="game-field js-game-field"><tr>' +
-        '<td data-position="0-0" class="dead"></td></tr></table>';
-
-      const $body = $('body');
-      $body.html(testBody);
-    });
-
-    it('Click on dead cell changes it class to alive', () => {
-      const view = new View(1, 1);
-
-      let $cell = $('td');
-      $cell.trigger('click');
-
-      assert.equal($cell.hasClass('alive'), true);
-    });
-    it('Click on dead cell removes class dead from it', () => {
-      const view = new View(1, 1);
-
-      let $cell = $('td');
-      $cell.trigger('click');
-
-      assert.equal($cell.hasClass('dead'), false);
     });
   });
   describe('Checking drawField()', () => {
@@ -178,6 +97,86 @@ describe('View testing:', () => {
         '</tr></table>';
 
       assert.equal(result, expectingResult);
+    });
+  });
+  describe('Checking _changeCellStateBind()', () => {
+    beforeEach(() => {
+      const testBody = '<table class="game-field js-game-field"><tr>' +
+        '<td data-position="0-0" class="dead"></td></tr></table>';
+
+      const $body = $('body');
+      $body.html(testBody);
+    });
+
+    it('Click on dead cell changes it class to alive', () => {
+      const view = new View(1, 1);
+
+      let $cell = $('td');
+      $cell.trigger('click');
+
+      assert.equal($cell.hasClass('alive'), true);
+    });
+    it('Click on dead cell removes class dead from it', () => {
+      const view = new View(1, 1);
+
+      let $cell = $('td');
+      $cell.trigger('click');
+
+      assert.equal($cell.hasClass('dead'), false);
+    });
+  });
+  describe('Checking _startButtonBind()', () => {
+    beforeEach(() => {
+      const testBody = '<form class="control">' +
+        '<button class="start-button js-start-button">Начать</button>' +
+        '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+        '</form>';
+
+      const $body = $('body');
+      $body.html(testBody);
+    });
+    it('Click on the js-start-button adds attr disabled to itself', () => {
+      const view = new View();
+
+      const $startButton = $('.js-start-button');
+      $startButton.trigger('click');
+
+      assert.equal($('.js-start-button').prop('disabled'), true);
+    });
+    it('Click on the js-start-button deletes attr disabled from js-pause-button', () => {
+      const view = new View();
+
+      const $startButton = $('.js-start-button');
+      $startButton.trigger('click');
+
+      assert.equal($('.js-pause-button').prop('disabled'), false);
+    });
+  });
+  describe('Checking _pauseButtonBind()', () => {
+    beforeEach(() => {
+      const testBody = '<form class="control">' +
+        '<button class="start-button js-start-button">Начать</button>' +
+        '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
+        '</form>';
+
+      const $body = $('body');
+      $body.html(testBody);
+    });
+    it('Click on the js-pause-button adds attr disabled to itself', () => {
+      const view = new View();
+
+      const $startButton = $('.js-pause-button');
+      $startButton.trigger('click');
+
+      assert.equal($('.js-pause-button').prop('disabled'), true);
+    });
+    it('Click on the js-pause-button deletes attr disabled from js-start-button', () => {
+      const view = new View();
+
+      const $startButton = $('.js-pause-button');
+      $startButton.trigger('click');
+
+      assert.equal($('.js-start-button').prop('disabled'), false);
     });
   });
 });
