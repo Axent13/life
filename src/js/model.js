@@ -48,11 +48,7 @@ class Model {
       row.forEach((item, xPos) => {
         const aliveNeighboursCounter = this._checkingAliveNeighbours(xPos, yPos);
 
-        if (!this._isCellAlive(xPos, yPos) && Model.isNeighboursOk(aliveNeighboursCounter)) {
-          this._changingCells.push([xPos, yPos]);
-        } else if (this._isCellAlive(xPos, yPos) && Model.isNeighboursFew(aliveNeighboursCounter)) {
-          this._changingCells.push([xPos, yPos]);
-        } else if (this._isCellAlive(xPos, yPos) && Model.isNeighboursMany(aliveNeighboursCounter)) {
+        if (this._isCellWillChange(xPos, yPos, aliveNeighboursCounter)) {
           this._changingCells.push([xPos, yPos]);
         }
       });
@@ -65,24 +61,32 @@ class Model {
     return this._changingCells;
   }
 
-  _isCellAlive(xPos, yPos) {
-    return this._cells[xPos][yPos] === 1;
+  static isNeighboursCountBad(neighboursCount) {
+    return neighboursCount < 2 || neighboursCount > 3;
   }
 
-  static isNeighboursFew(neighboursCount) {
-    return neighboursCount < 2;
-  }
-
-  static isNeighboursMany(neighboursCount) {
-    return neighboursCount > 3;
-  }
-
-  static isNeighboursOk(neighboursCount) {
+  static isNeighboursCountGood(neighboursCount) {
     return neighboursCount === 3;
   }
 
   static isItNeighbour(xPos, yPos) {
     return !(xPos === 0 && yPos === 0);
+  }
+
+  _isCellAlive(xPos, yPos) {
+    return this._cells[xPos][yPos] === 1;
+  }
+
+  _isCellBecomeAlive(xPos, yPos, neighboursCount) {
+    return !this._isCellAlive(xPos, yPos) && Model.isNeighboursCountGood(neighboursCount);
+  }
+
+  _isCellBecomeDead(xPos, yPos, neighboursCount) {
+    return this._isCellAlive(xPos, yPos) && Model.isNeighboursCountBad(neighboursCount);
+  }
+
+  _isCellWillChange(xPos, yPos, neighboursCount) {
+    return this._isCellBecomeAlive(xPos, yPos, neighboursCount) || this._isCellBecomeDead(xPos, yPos, neighboursCount);
   }
 
   _isElementInsideField(xPos, yPos) {

@@ -177,72 +177,155 @@ describe('Model testing:', () => {
       assert.equal(expectingResult, false);
     });
   });
-  describe('Checking isNeghboursFew()', () => {
+  describe('Checking isNeighboursCountBad()', () => {
     it('Must return true, if neighbours < 2', () => {
-      const expectingResult = Model.isNeighboursFew(0);
-
-      assert.equal(expectingResult, true);
-    });
-    it('Must return true, if neighbours < 2', () => {
-      const expectingResult = Model.isNeighboursFew(1);
-
-      assert.equal(expectingResult, true);
-    });
-    it('Must return false, if neighbours >= 2', () => {
-      const expectingResult = Model.isNeighboursFew(2);
-
-      assert.equal(expectingResult, false);
-    });
-    it('Must return false, if neighbours >= 2', () => {
-      const expectingResult = Model.isNeighboursFew(8);
-
-      assert.equal(expectingResult, false);
-    });
-  });
-  describe('Checking isNeghboursMany()', () => {
-    it('Must return true, if neighbours > 3', () => {
-      const expectingResult = Model.isNeighboursMany(4);
+      const expectingResult = Model.isNeighboursCountBad(0);
 
       assert.equal(expectingResult, true);
     });
     it('Must return true, if neighbours > 3', () => {
-      const expectingResult = Model.isNeighboursMany(8);
+      const expectingResult = Model.isNeighboursCountBad(4);
 
       assert.equal(expectingResult, true);
     });
-    it('Must return true, if neighbours <= 3', () => {
-      const expectingResult = Model.isNeighboursMany(3);
+    it('Must return true, if neighbours > 3', () => {
+      const expectingResult = Model.isNeighboursCountBad(8);
+
+      assert.equal(expectingResult, true);
+    });
+    it('Must return false, if neighbours >= 2', () => {
+      const expectingResult = Model.isNeighboursCountBad(2);
 
       assert.equal(expectingResult, false);
     });
     it('Must return true, if neighbours <= 3', () => {
-      const expectingResult = Model.isNeighboursMany(0);
+      const expectingResult = Model.isNeighboursCountBad(3);
 
       assert.equal(expectingResult, false);
     });
   });
-  describe('Checking isNeghboursOk()', () => {
+
+  describe('Checking isNeghboursGood()', () => {
     it('Must return true, if neighbours === 3', () => {
-      const expectingResult = Model.isNeighboursOk(3);
+      const expectingResult = Model.isNeighboursCountGood(3);
 
       assert.equal(expectingResult, true);
     });
-    it('Must return true, if neighbours !== 3', () => {
-      const expectingResult = Model.isNeighboursOk(2);
+    it('Must return false, if neighbours === 2', () => {
+      const expectingResult = Model.isNeighboursCountGood(2);
 
       assert.equal(expectingResult, false);
     });
-    it('Must return true, if neighbours !== 3', () => {
-      const expectingResult = Model.isNeighboursOk(0);
+    it('Must return false, if neighbours < 2', () => {
+      const expectingResult = Model.isNeighboursCountGood(0);
 
       assert.equal(expectingResult, false);
     });
-    it('Must return true, if neighbours !== 3', () => {
-      const expectingResult = Model.isNeighboursOk(8);
+    it('Must return false, if neighbours > 3', () => {
+      const expectingResult = Model.isNeighboursCountGood(8);
 
       assert.equal(expectingResult, false);
     });
   });
+
+  describe('Checking _isCellBecomeAlive()', () => {
+    it('must return false for alive cell', () => {
+      const model = new Model(1, 1);
+      model.createEmptyField();
+
+      model.changeCellState(0, 0);
+
+      const expectingResult = model._isCellBecomeAlive(0, 0, 0);
+      assert.equal(expectingResult, false);
+    });
+    it('must return false for dead cell with 0 neighbours', () => {
+      const model = new Model(1, 1);
+      model.createEmptyField();
+
+      const expectingResult = model._isCellBecomeAlive(0, 0, 0);
+      assert.equal(expectingResult, false);
+    });
+    it('must return true for dead cell with 3 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      const expectingResult = model._isCellBecomeAlive(1, 1, 3);
+      assert.equal(expectingResult, true);
+    });
+    it('must return false for dead cell with 2 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      const expectingResult = model._isCellBecomeAlive(1, 1, 2);
+      assert.equal(expectingResult, false);
+    });
+  });
+
+  describe('Checking _isCellBecomeDead()', () => {
+    it('must return false for dead cell', () => {
+      const model = new Model(1, 1);
+      model.createEmptyField();
+
+      const expectingResult = model._isCellBecomeDead(0, 0, 0);
+      assert.equal(expectingResult, false);
+    });
+    it('must return false for alive cell with 2 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      model.changeCellState(1, 1);
+
+      const expectingResult = model._isCellBecomeDead(1, 1, 2);
+      assert.equal(expectingResult, false);
+    });
+    it('must return true for alive cell with 5 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      model.changeCellState(1, 1);
+
+      const expectingResult = model._isCellBecomeDead(1, 1, 5);
+      assert.equal(expectingResult, true);
+    });
+    it('must return true for alive cell with 0 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      model.changeCellState(1, 1);
+
+      const expectingResult = model._isCellBecomeDead(1, 1, 0);
+      assert.equal(expectingResult, true);
+    });
+  });
+
+  describe('Checking _isCellWillChange()', () => {
+    it('must return false for alive cell with 2 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      model.changeCellState(1, 1);
+
+      const expectingResult = model._isCellWillChange(1, 1, 2);
+      assert.equal(expectingResult, false);
+    });
+    it('must return true for alive cell with 0 neighbours', () => {
+      const model = new Model(1, 1);
+      model.createEmptyField();
+
+      model.changeCellState(0, 0);
+
+      const expectingResult = model._isCellWillChange(0, 0, 0);
+      assert.equal(expectingResult, true);
+    });
+    it('must return true for dead cell with 3 neighbours', () => {
+      const model = new Model(3, 3);
+      model.createEmptyField();
+
+      const expectingResult = model._isCellBecomeAlive(1, 1, 3);
+      assert.equal(expectingResult, true);
+    });
+  });
+
   describe('Checking isItNeighbour()', () => {
     it('Must return false, if both arguments === 0', () => {
       const expectingResult = Model.isItNeighbour(0, 0);
