@@ -1,60 +1,51 @@
+const webpackConfig = require('../webpack/webpack.config.js');
+
 module.exports = function (config) {
 
-    config.set({
+  config.set({
 
-        basePath: '../',
+    basePath: '../',
 
-        frameworks: ['mocha', 'chai', 'jquery-1.8.3', 'sinon'],
+    frameworks: ['mocha', 'chai', 'jquery-1.8.3', 'sinon'],
 
-        files: [
-            'test/*.spec.js'
-        ],
+    files: [
+      'test/*.spec.js',
+    ],
 
-        preprocessors: {
-            'test/*.spec.js': ['webpack']
-        },
+    preprocessors: {
+      'test/*.spec.js': ['webpack']
+    },
 
-        webpack: {
-            module: {
+    webpack: {
+      module: webpackConfig.module
+    },
 
-                loaders: [{
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: 'babel-loader',
-                    query: {
-                        presets: ['es2015']
-                    }
-                }]
+    plugins: [
+      require('karma-webpack'),
+      require('karma-chrome-launcher'),
+      require('karma-mocha'),
+      require('karma-chai'),
+      require('karma-mocha-reporter'),
+      require('karma-jquery'),
+      require('karma-sinon')
+    ],
 
-            }
-        },
+    reporters: ['mocha'],
 
-        plugins: [
-            require('karma-webpack'),
-            require('karma-chrome-launcher'),
-            require('karma-mocha'),
-            require('karma-chai'),
-            require('karma-mocha-reporter'),
-            require('karma-jquery'),
-            require('karma-sinon')
-        ],
+    mochaReporter: {
+      colors: {
+        error: 'bgRed'
+      }
+    },
 
-        reporters: ['mocha'],
+    port: 9876,
+    colors: true,
+    autoWatch: true,
+    singleRun: false,
 
-        mochaReporter: {
-            colors: {
-                error: 'bgRed'
-            }
-        },
+    logLevel: config.LOG_INFO,
 
-        port: 9876,
-        colors: true,
-        autoWatch: true,
-        singleRun: false,
+    browsers: ['Chrome']
 
-        logLevel: config.LOG_INFO,
-
-        browsers: ['Chrome']
-
-    });
+  });
 };

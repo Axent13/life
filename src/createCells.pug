@@ -1,0 +1,14 @@
+mixin createCells(fieldHeight, fieldWidth, cellsStates)
+    - var i = 0
+    while i < fieldHeight
+        tr
+            - var j = 0
+            while  j < fieldWidth
+                if cellsStates[i][j] == 0
+                    td.dead(data-position=i + "-" + j)
+                else
+                    td.alive(data-position=i + "-" + j)
+                - j += 1
+            - i += 1
+
++createCells(fieldHeight, fieldWidth, cellsStates)
