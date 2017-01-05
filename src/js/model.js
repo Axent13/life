@@ -73,6 +73,13 @@ class Model {
     return !(xPos === 0 && yPos === 0);
   }
 
+  static inRange(number, leftLimit, rightLimit) {
+    if (leftLimit < rightLimit){
+      return (number >= leftLimit && number < rightLimit);
+    }
+    return (number >= rightLimit && number < leftLimit);
+  }
+
   _isCellAlive(xPos, yPos) {
     return this._cells[xPos][yPos] === 1;
   }
@@ -90,8 +97,8 @@ class Model {
   }
 
   _isElementInsideField(xPos, yPos) {
-    if (yPos >= 0 && yPos < this._fieldWidth) {
-      if (xPos >= 0 && xPos < this._fieldHeight) {
+    if (Model.inRange(yPos, 0, this._fieldWidth)) {
+      if (Model.inRange(xPos, 0, this._fieldHeight)) {
         return 1;
       }
     }
