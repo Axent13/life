@@ -18,11 +18,13 @@ class Controller {
   }
 
   initializeInterval() {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       if (this._model.getGameState()) {
         this.nextStep();
       }
     }, 1000);
+
+    return intervalId;
   }
 
   nextStep() {
@@ -35,9 +37,11 @@ class Controller {
   _gameStateListen() {
     this._view.on('startGame', () => {
       this._model.setGameState(true);
+      this._intervalId = this.initializeInterval();
     });
     this._view.on('pauseGame', () => {
       this._model.setGameState(false);
+      clearInterval(this._intervalId);
     });
   }
 
