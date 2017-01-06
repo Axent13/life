@@ -31,11 +31,7 @@ class Model {
 
   changeCellState(xPos, yPos) {
     if (this._isElementInsideField(xPos, yPos) === 1) {
-      if (this._cells[xPos][yPos] === 1) {
-        this._cells[xPos][yPos] = 0;
-      } else {
-        this._cells[xPos][yPos] = 1;
-      }
+      this._cells[xPos][yPos] = this._cells[xPos][yPos] === 1 ? 0 : 1;
     }
 
     return this;
