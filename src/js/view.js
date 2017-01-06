@@ -24,8 +24,6 @@ class View extends eventEmitter {
 
     $gameField.html(templateCreateCells(locals));
 
-    this.emit('event');
-
     return $gameField.html();
   }
 
