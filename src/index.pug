@@ -13,5 +13,9 @@ html
     body
         table.game-field.js-game-field
         form.control
+            label Высота
+                input.control__height.js-control__height(type="text" maxlength="3" placeholder="30")
+            label Ширина
+                input.control__width.js-control__width(type="text" maxlength="3" placeholder="30")
             button.start-button.js-start-button Начать
             button.pause-button.js-pause-button(disabled='') Пауза

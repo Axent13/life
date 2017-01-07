@@ -3,18 +3,16 @@ import View from './view.js';
 
 class Controller {
 
-  constructor(fieldWidth = 30, fieldHeight = 30) {
-    this._fieldWidth = fieldWidth;
-    this._fieldHeight = fieldHeight;
-
-    this._view = new View(this._fieldWidth, this._fieldHeight);
+  constructor() {
+    this._view = new View();
     this._gameStateListen();
     this._changeCellListen();
+    this._unfocusInputsListen();
 
-    this._model = new Model(this._fieldWidth, this._fieldHeight);
+    this._model = new Model();
     this._model.createEmptyField();
 
-    this._view.drawField(this._model.getCells());
+    this._view.drawField(this._model.getHeight(), this._model.getWidth(), this._model.getCells());
   }
 
   initializeInterval() {
@@ -29,7 +27,7 @@ class Controller {
 
   nextStep() {
     this._model.nextCellStates();
-    this._view.drawField(this._model.getCells());
+    this._view.drawField(this._model.getHeight(), this._model.getWidth(), this._model.getCells());
 
     return this;
   }
@@ -49,6 +47,17 @@ class Controller {
     this._view.on('changeCell', (cellPosition) => {
       const [xCoordinate, yCoordinate] = cellPosition.split('-');
       this._model.changeCellState(xCoordinate, yCoordinate);
+    });
+  }
+
+  _unfocusInputsListen() {
+    this._view.on('changeFieldHeight', (newFieldHeight) => {
+      this._model.setHeight(newFieldHeight);
+      this._view.drawField(this._model.getHeight(), this._model.getWidth(), this._model.getCells());
+    });
+    this._view.on('changeFieldWidth', (newFieldWidth) => {
+      this._model.setWidth(newFieldWidth);
+      this._view.drawField(this._model.getHeight(), this._model.getWidth(), this._model.getCells());
     });
   }
 

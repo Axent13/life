@@ -13,3 +13,18 @@
     background-color: green;
     border: 1px solid black;
 }
+
+.game-field {
+    margin: 0 auto;
+}
+
+.control {
+    width: 15%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.control__height,
+.control__width {
+    width: 30px;
+}

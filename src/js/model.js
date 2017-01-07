@@ -8,6 +8,28 @@ class Model {
     this._cells = [];
   }
 
+  getHeight() {
+    return this._fieldHeight;
+  }
+
+  setHeight(newFieldHeight) {
+    this._fieldHeight = +newFieldHeight;
+    this.createEmptyField();
+
+    return this;
+  }
+
+  getWidth() {
+    return this._fieldWidth;
+  }
+
+  setWidth(newFieldWidth) {
+    this._fieldWidth = +newFieldWidth;
+    this.createEmptyField();
+
+    return this;
+  }
+
   getGameState() {
     return !this._isPaused;
   }
@@ -40,8 +62,8 @@ class Model {
   nextCellStates() {
     this._changingCells = [];
 
-    this._cells.forEach((row, yPos) => {
-      row.forEach((item, xPos) => {
+    this._cells.forEach((row, xPos) => {
+      row.forEach((item, yPos) => {
         const aliveNeighboursCounter = this._checkingAliveNeighbours(xPos, yPos);
 
         if (this._isCellWillChange(xPos, yPos, aliveNeighboursCounter)) {

@@ -3,22 +3,20 @@ const eventEmitter = require('events');
 
 class View extends eventEmitter {
 
-  constructor(fieldWidth = 30, fieldHeight = 30) {
+  constructor() {
     super();
-    this._fieldWidth = fieldWidth;
-    this._fieldHeight = fieldHeight;
-
     this._startButtonBind();
     this._pauseButtonBind();
     this._changeCellStateBind();
+    this._unfocusInputsBind();
   }
 
-  drawField(cells) {
+  drawField(modelFieldHeight, modelFieldWidth, cells) {
     const $gameField = $('.js-game-field');
 
     const locals = {
-      fieldHeight: this._fieldHeight,
-      fieldWidth: this._fieldWidth,
+      fieldHeight: modelFieldHeight,
+      fieldWidth: modelFieldWidth,
       cellsStates: cells,
     };
 
@@ -32,6 +30,27 @@ class View extends eventEmitter {
       $(event.currentTarget).toggleClass('alive dead');
       const cellPosition = $(event.currentTarget).attr('data-position');
       this.emit('changeCell', cellPosition);
+    });
+
+    return this;
+  }
+
+  _unfocusInputsBind() {
+    const $heightInput = $('.js-control__height');
+    $heightInput.focusout(() => {
+      const newFieldHeight = $heightInput.val();
+
+      if (View.isPositiveNumber(newFieldHeight)) {
+        this.emit('changeFieldHeight', newFieldHeight);
+      }
+    });
+    const $widthInput = $('.js-control__width');
+    $widthInput.focusout(() => {
+      const newFieldWidth = $widthInput.val();
+
+      if (View.isPositiveNumber(newFieldWidth)) {
+        this.emit('changeFieldWidth', newFieldWidth);
+      }
     });
 
     return this;
@@ -59,6 +78,10 @@ class View extends eventEmitter {
     });
 
     return this;
+  }
+
+  static isPositiveNumber(num) {
+    return (!isNaN(num) && num > 0);
   }
 
 }
