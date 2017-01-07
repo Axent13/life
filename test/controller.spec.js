@@ -83,50 +83,7 @@ describe('Controller testing', () => {
       const $body = $('body');
       $body.html(testBody);
     });
-    it('should not run if _isPaused === true', () => {
-      const controller = new Controller();
-      controller.initializeInterval();
-      let spy = sinon.spy(Controller.prototype, 'nextStep');
 
-      expect(spy.called).to.be.false;
-      spy.restore();
-    });
-    it('should not run if _isPaused === false but not passed at least 1 second', () => {
-      let clock = sinon.useFakeTimers();
-
-      const controller = new Controller();
-      controller.initializeInterval();
-
-      let spy = sinon.spy(Controller.prototype, 'nextStep');
-
-      expect(spy.called).to.be.false;
-
-      controller._isPaused = true;
-      clock.tick(500);
-      expect(spy.called).to.be.false;
-
-      spy.restore();
-      clock.restore();
-    });
-    it('should run if _isPaused === false and passed at least 1 second', () => {
-      let clock = sinon.useFakeTimers();
-
-      const controller = new Controller();
-      const $startButton = $('.js-start-button');
-
-      controller.initializeInterval();
-
-      let spy = sinon.spy(Controller.prototype, 'nextStep');
-
-      expect(spy.called).to.be.false;
-
-      $startButton.trigger('click');
-      clock.tick(10000);
-      expect(spy.called).to.be.true;
-
-      spy.restore();
-      clock.restore();
-    });
   });
 
   describe('Checking gameStateListen()', () => {
