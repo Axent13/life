@@ -1,96 +1,145 @@
 import Controller from '../src/js/controller.js';
 import Model from '../src/js/model.js';
+import View from '../src/js/view.js';
 
-const assert = require('assert');
+const chai = require('chai');
+const assert = chai.assert;
 
 describe('Controller testing', () => {
   describe('Checking constructor', () => {
-    it('input fieldWidth should be equal to property _fieldWidth', () => {
-      const fieldWidth = 10;
-      const controller = new Controller(fieldWidth, 1);
+    it('should run _gameStatelisten after creation', () => {
+      const spy = sinon.spy(Controller.prototype, '_gameStateListen');
 
-      assert.equal(controller._fieldWidth, fieldWidth);
+      new Controller();
+      expect(spy.called).to.be.true;
+      spy.restore();
     });
-    it('input fieldHeight should be equal to property _fieldHeight', () => {
-      const fieldHeight = 10;
-      const controller = new Controller(1, fieldHeight);
+    it('should run _changeCellListen after creation', () => {
+      const spy = sinon.spy(Controller.prototype, '_changeCellListen');
 
-      assert.equal(controller._fieldHeight, fieldHeight);
+      new Controller();
+      expect(spy.called).to.be.true;
+      spy.restore();
     });
-    it('properties _fieldWidth and _fieldHeight should be 30 in default', () => {
+    it('should run _unfocusInputsListen after creation', () => {
+      const spy = sinon.spy(Controller.prototype, '_unfocusInputsListen');
+
+      new Controller();
+      expect(spy.called).to.be.true;
+      spy.restore();
+    });
+    it('checking that model was created after controller creation', () => {
       const controller = new Controller();
 
-      assert.equal(controller._fieldWidth, 30);
-      assert.equal(controller._fieldHeight, 30);
+      assert.isDefined(controller._model);
     });
-  });
-  describe('Checking nextStep()', () => {
-    beforeEach(() => {
-      const testBody = '<table class="game-field js-game-field"><tbody>' +
-        '<tr><td data-position="0-0" class="dead"></td>' +
-        '<td data-position="0-1" class="dead"></td>' +
-        '<td data-position="0-2" class="dead"></td></tr>' +
-        '<tr><td data-position="1-0" class="dead"></td>' +
-        '<td data-position="1-1" class="dead"></td>' +
-        '<td data-position="1-2" class="dead"></td></tr>' +
-        '<tr><td data-position="2-0" class="dead"></td>' +
-        '<td data-position="2-1" class="dead"></td>' +
-        '<td data-position="2-2" class="dead"></td></tr>' +
-        '</tbody></table>';
+    it('checking that _model.createEmptyField() was called after creation', () => {
+      const spy = sinon.spy(Model.prototype, 'createEmptyField');
 
-      const $body = $('body');
-      $body.html(testBody);
+      new Controller();
+      expect(spy.called).to.be.true;
+      spy.restore();
     });
-    it('cell [0, 0] will change after nextStep()', () => {
-      const controller = new Controller(3, 3);
-      controller._model.changeCellState(0, 0);
+    it('checking that view was created after controller creation', () => {
+      const controller = new Controller();
 
-      controller.nextStep();
-
-      const result = controller._model._changingCells;
-      assert.deepEqual(result, [[0, 0]]);
+      assert.isDefined(controller._view);
     });
-    it('cell [-1, -1] will not change anything after nextStep()', () => {
-      const controller = new Controller(3, 3);
+    it('chacking that _view.drawField was called after creation', () => {
+      const spy = sinon.spy(View.prototype, 'drawField');
 
-      controller._model.changeCellState(-1, -1);
-      controller.nextStep();
-
-      const result = controller._model._changingCells;
-      assert.deepEqual(result, []);
-    });
-    it('1x3 line should change 4 cells after nextStep()', () => {
-      const controller = new Controller(3, 3);
-
-      controller._model.changeCellState(1, 0);
-      controller._model.changeCellState(1, 1);
-      controller._model.changeCellState(1, 2);
-
-      controller.nextStep();
-
-      const result = controller._model._changingCells;
-      assert.deepEqual(result, [[1, 0], [0, 1], [2, 1], [1, 2]]);
+      new Controller();
+      expect(spy.called).to.be.true;
+      spy.restore();
     });
   });
 
   describe('Checking initializeInterval()', () => {
-    beforeEach(() => {
-      const testBody = '<form class="control">' +
-        '<button class="start-button js-start-button">Начать</button>' +
-        '<button class="pause-button js-pause-button" disabled>Пауза</button>' +
-        '</form>';
+    it('should not call method nextStep if model._isPaused === true', () => {
+      const controller = new Controller();
+      controller.initializeInterval();
+      const spy = sinon.spy(Controller.prototype, 'nextStep');
 
-      const $body = $('body');
-      $body.html(testBody);
+      expect(spy.called).to.be.false;
+      spy.restore();
     });
+    it('should not call method nextStep if model._isPaused === true but not passed at least 1 second', () => {
+      const clock = sinon.useFakeTimers();
 
+      const controller = new Controller();
+      controller.initializeInterval();
+
+      const spy = sinon.spy(Controller.prototype, 'nextStep');
+
+      expect(spy.called).to.be.false;
+
+      controller._model._isPaused = false;
+      clock.tick(500);
+      expect(spy.called).to.be.false;
+
+      spy.restore();
+      clock.restore();
+    });
+    it('should call method nextStep if model._isPaused === false and passed at least 1 second', () => {
+      const clock = sinon.useFakeTimers();
+
+      const controller = new Controller();
+
+      controller.initializeInterval();
+
+      const spy = sinon.spy(Controller.prototype, 'nextStep');
+
+      expect(spy.called).to.be.false;
+
+      controller._model._isPaused = false;
+      clock.tick(10000);
+      expect(spy.called).to.be.true;
+
+      spy.restore();
+      clock.restore();
+    });
+    it('should not call method nextStep if model._isPaused === true and passed at least 1 second', () => {
+      const clock = sinon.useFakeTimers();
+
+      const controller = new Controller();
+
+      controller.initializeInterval();
+
+      const spy = sinon.spy(Controller.prototype, 'nextStep');
+
+      clock.tick(10000);
+      expect(spy.called).to.be.false;
+
+      spy.restore();
+      clock.restore();
+    });
   });
 
+  describe('Checking nextStep()', () => {
+    it('should call method _model.nextCellStates', () => {
+      const controller = new Controller();
+      const spy = sinon.spy(Model.prototype, 'nextCellStates');
+
+      controller.nextStep();
+
+      expect(spy.called).to.be.true;
+      spy.restore();
+    });
+    it('should call method _view.drawField', () => {
+      const controller = new Controller();
+      const spy = sinon.spy(View.prototype, 'drawField');
+
+      controller.nextStep();
+
+      expect(spy.called).to.be.true;
+      spy.restore();
+    });
+  });
   describe('Checking gameStateListen()', () => {
     it('should call model.setGameState(), after view emits startGame', () => {
       const controller = new Controller();
 
-      let spy = sinon.spy(Model.prototype, 'setGameState');
+      const spy = sinon.spy(Model.prototype, 'setGameState');
       expect(spy.called).to.be.false;
 
       controller._view.emit('startGame');
@@ -101,7 +150,7 @@ describe('Controller testing', () => {
     it('should call model.setGameState(), after view emits pauseGame', () => {
       const controller = new Controller();
 
-      let spy = sinon.spy(Model.prototype, 'setGameState');
+      const spy = sinon.spy(Model.prototype, 'setGameState');
       expect(spy.called).to.be.false;
 
       controller._view.emit('pauseGame');
@@ -115,7 +164,7 @@ describe('Controller testing', () => {
     it('should call model.changeCellState(), after view emits changeCell', () => {
       const controller = new Controller();
 
-      let spy = sinon.spy(Model.prototype, 'changeCellState');
+      const spy = sinon.spy(Model.prototype, 'changeCellState');
       expect(spy.called).to.be.false;
 
       controller._view.emit('changeCell', '0-0');
@@ -126,7 +175,7 @@ describe('Controller testing', () => {
     it('should call model.changeCellState() with parameters (0,0), after view emits changeCell', () => {
       const controller = new Controller();
 
-      let spy = sinon.spy(Model.prototype, 'changeCellState');
+      const spy = sinon.spy(Model.prototype, 'changeCellState');
       expect(spy.called).to.be.false;
 
       controller._view.emit('changeCell', '0-0');
