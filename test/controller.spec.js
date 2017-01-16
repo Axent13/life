@@ -136,7 +136,7 @@ describe('Controller testing', () => {
     });
   });
   describe('Checking gameStateListen()', () => {
-    it('should call model.setGameState(), after view emits startGame', () => {
+    it('should call model.setGameState() with argument true, after view emits startGame', () => {
       const controller = new Controller();
 
       const spy = sinon.spy(Model.prototype, 'setGameState');
@@ -144,10 +144,10 @@ describe('Controller testing', () => {
 
       controller._view.emit('startGame');
 
-      expect(spy.called).to.be.true;
+      sinon.assert.calledWith(spy, true);
       spy.restore();
     });
-    it('should call model.setGameState(), after view emits pauseGame', () => {
+    it('should call model.setGameState() with argument false, after view emits pauseGame', () => {
       const controller = new Controller();
 
       const spy = sinon.spy(Model.prototype, 'setGameState');
@@ -155,7 +155,7 @@ describe('Controller testing', () => {
 
       controller._view.emit('pauseGame');
 
-      expect(spy.called).to.be.true;
+      sinon.assert.calledWith(spy, false);
       spy.restore();
     });
   });
