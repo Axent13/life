@@ -184,4 +184,29 @@ describe('Controller testing', () => {
       spy.restore();
     });
   });
+
+  describe('Checking unfocusInputsListen()', () => {
+    it('should call model.setHeight() with argument 10, after view emits changeFieldHeight', () => {
+      const controller = new Controller();
+
+      const spy = sinon.spy(Model.prototype, 'setHeight');
+      expect(spy.called).to.be.false;
+
+      controller._view.emit('changeFieldHeight', '10');
+
+      sinon.assert.calledWith(spy, '10');
+      spy.restore();
+    });
+    it('should call model.setWidth() with argument 10, after view emits changeFieldWidth', () => {
+      const controller = new Controller();
+
+      const spy = sinon.spy(Model.prototype, 'setWidth');
+      expect(spy.called).to.be.false;
+
+      controller._view.emit('changeFieldWidth', '10');
+
+      sinon.assert.calledWith(spy, '10');
+      spy.restore();
+    });
+  });
 });
