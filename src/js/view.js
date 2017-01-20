@@ -39,6 +39,7 @@ class View extends eventEmitter {
     const $heightInput = $('.js-control__height');
     $heightInput.focusout(() => {
       const newFieldHeight = $heightInput.val();
+      console.log("height unfocused!!!!");
 
       if (View.isPositiveNumber(newFieldHeight)) {
         this.emit('changeFieldHeight', newFieldHeight);
@@ -47,6 +48,7 @@ class View extends eventEmitter {
     const $widthInput = $('.js-control__width');
     $widthInput.focusout(() => {
       const newFieldWidth = $widthInput.val();
+      console.log("width unfocused!!!!!");
 
       if (View.isPositiveNumber(newFieldWidth)) {
         this.emit('changeFieldWidth', newFieldWidth);
