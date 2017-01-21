@@ -1,8 +1,6 @@
 import Controller from './controller.js';
 
-const startGame = () => {
-  return new Controller();
-};
+const startGame = () => new Controller();
 
 startGame();
 
