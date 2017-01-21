@@ -1,7 +1,7 @@
 import Controller from './controller.js';
 
 const startGame = () => {
-  const controller = new Controller();
+  return new Controller();
 };
 
 startGame();
