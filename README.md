@@ -1,5 +1,13 @@
-#Game Of Life by Axent13
-##Как запустить:
+# Conway's Game of Life
+
+Реализация [Игры "Жизнь"](https://ru.wikipedia.org/wiki/Игра_«Жизнь») на JavaScript
+
+## Как запустить:
+
+Клонируем репозиторий:
+
+`git clone https://github.com/Axent13/life.git`
+
 Переходим в директорию с проектом:
 `npm install`
 
