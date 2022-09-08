@@ -1,6 +1,7 @@
 import Model from '../src/js/model.js';
 
-const assert = require('assert');
+const chai = require('chai');
+const assert = chai.assert;
 
 describe('Model testing:', () => {
   describe('Checking constructor', () => {

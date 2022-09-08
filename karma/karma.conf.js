@@ -1,25 +1,18 @@
-const webpackConfig = require('../webpack/webpack.config.js');
+const webpackConfig = require('../webpack.config.js');
 
 module.exports = function (config) {
-
   config.set({
-
     basePath: '../',
-
-    frameworks: ['mocha', 'chai', 'jquery-1.8.3', 'sinon'],
-
+    frameworks: ['mocha', 'chai', 'sinon', 'jquery-1.8.3', 'webpack'],
     files: [
       'test/*.spec.js',
     ],
-
     preprocessors: {
       'test/*.spec.js': ['webpack']
     },
-
     webpack: {
       module: webpackConfig.module
     },
-
     plugins: [
       require('karma-webpack'),
       require('karma-chrome-launcher'),
@@ -27,25 +20,19 @@ module.exports = function (config) {
       require('karma-chai'),
       require('karma-mocha-reporter'),
       require('karma-jquery'),
-      require('karma-sinon')
+      require('karma-sinon'),
     ],
-
     reporters: ['mocha'],
-
     mochaReporter: {
       colors: {
         error: 'bgRed'
       }
     },
-
     port: 9876,
     colors: true,
     autoWatch: true,
     singleRun: false,
-
     logLevel: config.LOG_INFO,
-
     browsers: ['Chrome']
-
   });
 };

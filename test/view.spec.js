@@ -1,7 +1,8 @@
 import View from '../src/js/view.js';
 const EventEmitter = require('events').EventEmitter;
 
-const assert = require('assert');
+const chai = require('chai');
+const assert = chai.assert;
 
 describe('View testing:', () => {
   beforeEach(() => {
@@ -64,7 +65,7 @@ describe('View testing:', () => {
       const view = new View();
 
       const resultingField = view.drawField(1, 1, [[0]]);
-      const expectingResult = '<tr><td class="dead" data-position="0-0"></td></tr>';
+      const expectingResult = '<tbody><tr><td class="dead" data-position="0-0"></td></tr></tbody>';
 
       assert.equal(resultingField, expectingResult);
     });
@@ -75,7 +76,7 @@ describe('View testing:', () => {
       const $body = $('body');
       const result = $body.html();
       const expectingResult = '<table class="game-field js-game-field">' +
-        '<tr><td class="dead" data-position="0-0"></td></tr></table>';
+        '<tbody><tr><td class="dead" data-position="0-0"></td></tr></tbody></table>';
 
       assert.equal(result, expectingResult);
     });
@@ -83,7 +84,7 @@ describe('View testing:', () => {
       const view = new View();
 
       const resultingField = view.drawField(1, 2, [[0, 0]]);
-      const expectingResult = '<tr><td class="dead" data-position="0-0"></td><td class="dead" data-position="0-1"></td></tr>';
+      const expectingResult = '<tbody><tr><td class="dead" data-position="0-0"></td><td class="dead" data-position="0-1"></td></tr></tbody>';
 
       assert.equal(resultingField, expectingResult);
     });
@@ -94,10 +95,10 @@ describe('View testing:', () => {
       const $body = $('body');
       const result = $body.html();
 
-      const expectingResult = '<table class="game-field js-game-field"><tr>' +
+      const expectingResult = '<table class="game-field js-game-field"><tbody><tr>' +
         '<td class="dead" data-position="0-0"></td>' +
         '<td class="dead" data-position="0-1"></td>' +
-        '</tr></table>';
+        '</tr></tbody></table>';
 
       assert.equal(result, expectingResult);
     });
